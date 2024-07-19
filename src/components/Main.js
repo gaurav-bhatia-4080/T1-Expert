@@ -55,7 +55,7 @@ function Main({ user, setUser }) {
     return urlEncodedEmail;
   };
   const [selected, setSelected] = useState(
-    user.email == "samwilson14111@gmail.com" ? "doctor" : "patients"
+    user.email == "jackdawson14111@gmail.com" ? "doctor" : "patients"
   );
 
   const handleSelect = (option) => {
@@ -155,11 +155,11 @@ function Main({ user, setUser }) {
     <div className="outmost">
       <Navbar user={user} setUser={setUser} currentComponent={"Home"} />
       {/* <span className="outer-nav-list"> */}
-      <span className="sidebar-span">        
+      <span className="sidebar-span">
         {/* <IconContext.Provider className="margin-padding" value={{ color: "#fff" }}> */}
         <nav className="nav-menu2">
           <ul className="nav-menu-items">
-            {user.email == "samwilson14111@gmail.com" && (
+            {user.email == "jackdawson14111@gmail.com" && (
               <div>
                 <div className="sections-gen-req"> General</div>
 
@@ -240,38 +240,39 @@ function Main({ user, setUser }) {
         {/* </span> */}
         {/* <span> */}
         <div className="flex-box-div">
-          {user.email == "samwilson14111@gmail.com" && selected == "doctor" && (
-            <div className="pending-patients-requests-outer">
-              <div className="pending-requests-title">
-                <h3 className="diff-requests-title underline2">Experts</h3>
+          {user.email == "jackdawson14111@gmail.com" &&
+            selected == "doctor" && (
+              <div className="pending-patients-requests-outer">
+                <div className="pending-requests-title">
+                  <h3 className="diff-requests-title underline2">Experts</h3>
+                </div>
+                <div className="div-req">
+                  {doctorList == null ? (
+                    <BeatLoader className="loading-list" color="#709fe6" />
+                  ) : doctorList.length == 0 ? (
+                    <div className="all-website-font">
+                      <img src={noReq} width={35} height={35} />
+                    </div>
+                  ) : (
+                    <div className="pending-patients-requests-list">
+                      <ul>
+                        {doctorList.map((doctor) => {
+                          return (
+                            <li>
+                              <RequestListItemDoctor
+                                list={doctorList}
+                                doctor={doctor}
+                                setList={setDoctorList}
+                              />
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="div-req">
-                {doctorList == null ? (
-                  <BeatLoader className="loading-list" color="#709fe6" />
-                ) : doctorList.length == 0 ? (
-                  <div className="all-website-font">
-                    <img src={noReq} width={35} height={35} />
-                  </div>
-                ) : (
-                  <div className="pending-patients-requests-list">
-                    <ul>
-                      {doctorList.map((doctor) => {
-                        return (
-                          <li>
-                            <RequestListItemDoctor
-                              list={doctorList}
-                              doctor={doctor}
-                              setList={setDoctorList}
-                            />
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
+            )}
           {selected == "patients" && (
             <div className="pending-patients-requests-outer">
               <div className="pending-requests-title">
