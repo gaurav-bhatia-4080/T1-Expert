@@ -40,6 +40,7 @@ import InsulinPatient from "./components/InsulinDetails";
 import MonthRecord from "./components/MonthRecord";
 import BgDetails from "./components/BgDetails";
 import FoodDetails from "./components/FoodDetails";
+import NewDoctorOnboardingForm from "./components/NewDoctorOnboardingForm";
 // import PatientLogin from './components/PatientLogin';
 // import MonthRecord from './components/MonthRecord';
 // import SinglePatientDetail from './components/SinglePatientDetail'
@@ -50,7 +51,6 @@ function App() {
   const getUser = async () => {
     console.log("THIS GET uSER FUNCTION IS CALLED NOW");
     try {
-      
       console.log("THIS IS THE ENV URL  ", process.env.REACT_APP_API_URL);
       const url = `${process.env.REACT_APP_API_URL}/auth/web/login/success`;
       const { data } = await axios.get(url, {
@@ -81,21 +81,36 @@ function App() {
                 exact
                 path="/"
                 element={
+                  // user ? (
+                  //   <Main user={user} setUser={setUser} />
+                  // ) : (
+                  //   <Navigate to="/login" />
+                  // )
                   user ? (
-                    <Main user={user} setUser={setUser} />
+                    "type" in user ? (
+                      user.type == 0 ? (
+                        <Unapproved user={user} />
+                      ) : user.type == -1 ? (
+                        <NewDoctorOnboardingForm user={user} />
+                      ) : (
+                        <Main user={user} setUser={setUser} />
+                      )
+                    ) : (
+                      <Main user={user} setUser={setUser} />
+                    )
                   ) : (
                     <Navigate to="/login" />
                   )
                 }
               />
-              <Route
+              {/* <Route
                 exact
                 path="/login/unApproved"
                 element={
                   user ? <Navigate to="/login" /> : <Unapproved user={user} />
                 }
               />
-
+ */}
               <Route
                 exact
                 path="/login"

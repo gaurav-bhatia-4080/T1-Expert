@@ -12,11 +12,22 @@ import RequestListItemFood from "./RequestLIstItemFood";
 import RequestListItem from "./RequestListItem";
 import "react-toastify/dist/ReactToastify.css";
 import { css } from "glamor";
+import NewRequestSent from "./NewRequestSent";
 toast.configure();
-function Unapproved() {
+function Unapproved(props) {
   return (
-    <div>
-        <h1>Please wait for the approval</h1>
+    <div className="parent">
+      <div className="landing-page"></div>
+      <div className="WgciCg LCN0VA"> </div>
+
+      <div className="Q7frNQ">
+        <div className="_2pukyg">
+          <div className="Ft_8Cg a6f7yQ"></div>
+          <div className="IMy50w a6f7yQ">
+          </div>
+        </div>
+      </div>
+      <NewRequestSent user={props.user}/>
     </div>
   );
 }

@@ -99,58 +99,68 @@ export const InsulinPatient = (props) => {
   //   });
 
   return (
-    <div className="outmost-scrolling">
-      <SideNavBar details={state.details} email={state.insulinProp} />
-      {/* App  sidebar-margin  */}
-      <div className="container-main sidebar-margin">
-        <h3 className="all-website-font underline">Insulin Entries</h3>
-        <h4 className="all-website-font underline">
-          Patient Id : {state.details.email}
-        </h4>
-        <button
-          className="all-website-font download-button"
-          onClick={exporthere}
-        >
-          Download Report
-          <img src={download} width={25} height={25} />
-        </button>
-        {exam != null ? (
-          // insulintable
-          <div className="main all-website-font">
-            <table id="my-table">
-              <thead>
-                <tr className="table2">
-                  <th>Insulin Amount</th>
-                  <th>Category</th>
-                  <th>Correction dose</th>
-                  <th>Insulin type</th>
-                  {/* <th>Recorded on</th>
+    <div className="outmost">
+      <span className="sidebar-span2">
+        <SideNavBar details={state.details} email={state.insulinProp} />
+        {/* App  sidebar-margin  */}
+        <div className="container-main flex-box-div">
+          <div className="pending-patients-requests-outer">
+            <div className="pending-requests-title">
+              <h3 className="diff-requests-title underline2">
+                Insulin Entries
+              </h3>
+              <h4 className="diff-requests-title underline2">
+                Patient Id : {state.details.email}
+              </h4>
+              <button
+                className="all-website-font download-button"
+                onClick={exporthere}
+              >
+                Download Report
+                <img src={download} width={25} height={25} />
+              </button>
+            </div>
+            {exam != null ? (
+              // insulintable
+              <div className="div-req">
+                <div className="pending-patients-requests-list2">
+                  <table id="my-table">
+                    <thead>
+                      <tr className="table2">
+                        <th>Insulin Amount</th>
+                        <th>Category</th>
+                        <th>Correction dose</th>
+                        <th>Insulin type</th>
+                        {/* <th>Recorded on</th>
                   <th>Recorded at</th> */}
-                  <th>Date</th>
-                  <th>Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                {exam.map((varrr) => (
-                  <tr>
-                    <td>{varrr.amount}</td>
-                    <td>{varrr.category}</td>
-                    <td>{varrr.correction_dose}</td>
-                    <td>{varrr.type}</td>
-                    {/* <td>{new Date(varrr.createdAt).toLocaleDateString()}</td>
+                        <th>Date</th>
+                        <th>Time</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {exam.map((varrr) => (
+                        <tr>
+                          <td>{varrr.amount}</td>
+                          <td>{varrr.category}</td>
+                          <td>{varrr.correction_dose}</td>
+                          <td>{varrr.type}</td>
+                          {/* <td>{new Date(varrr.createdAt).toLocaleDateString()}</td>
                     <td>{new Date(varrr.createdAt).getTime()}</td> */}
-                    <td>{new Date(varrr.date).toLocaleDateString()}</td>
-                    <td>{varrr.time}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                          <td>{new Date(varrr.date).toLocaleDateString()}</td>
+                          <td>{varrr.time}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ) : (
+              <Loading />
+              // <h1>Not Authorised</h1>
+            )}
           </div>
-        ) : (
-          <Loading />
-          // <h1>Not Authorised</h1>
-        )}
-      </div>
+        </div>
+      </span>
     </div>
   );
 };

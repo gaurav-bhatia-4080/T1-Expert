@@ -6,8 +6,14 @@ import axios from "axios";
 import Loading from "./Loading";
 import { useLocation } from "react-router-dom";
 import SideNavBar from "./SideNavBar";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import save from "../img/tick.png";
+import edit from "../img/edit.png";
 import Button from "react-bootstrap/Button";
 import download from "../img/download.png";
+toast.configure();
 
 var isLogin = false;
 var Listid = [];
@@ -15,14 +21,7 @@ var Listid = [];
 export const PredictionDetails = (props) => {
   const location = useLocation();
   const { state } = location;
-
-  const encryptEmailToUrl = (email) => {
-    // Encode email address to Base64
-    const encodedEmail = btoa(email);
-    // URL-encode special characters in the encoded email
-    const urlEncodedEmail = encodeURIComponent(encodedEmail);
-    return urlEncodedEmail;
-  };
+  const [showLoading, setShowLoading] = useState(false);
 
   const [exam, setexam] = useState({
     AVERAGE_BREAKFAST: "",
@@ -42,6 +41,77 @@ export const PredictionDetails = (props) => {
     PREV_INSULIN_TIME: "",
   });
 
+  const [avgBreakfast, setAvgBreakfast] = useState(exam.average_breakfast);
+  const [avgLunch, setAvgLunch] = useState(exam.average_lunch);
+  const [avgSnack, setAvgSnack] = useState(exam.average_snack);
+  const [avgDinner, setAvgDinner] = useState(exam.average_dinner);
+  const [bicr, setBicr] = useState(exam.breakfast_icr);
+  const [bisf, setBisf] = useState(exam.breakfast_isf);
+  const [licr, setLicr] = useState(exam.lunch_icr);
+  const [lisf, setLisf] = useState(exam.lunch_isf);
+  const [sicr, setSicr] = useState(exam.snack_icr);
+  const [sisf, setSisf] = useState(exam.snack_isf);
+  const [dicr, setDicr] = useState(exam.dinner_icr);
+  const [disf, setDisf] = useState(exam.dinner_isf);
+  const [icr, setIcr] = useState(exam.icr);
+  const [isf, setIsf] = useState(exam.isf);
+  const [divisionBy, setDivisionBy] = useState(exam.division_by);
+  const [insulinDose, setInsulinDose] = useState(exam.insulin_dose);
+
+  const [editable, setEditable] = useState(false);
+  const encryptEmailToUrl = (email) => {
+    // Encode email address to Base64
+    const encodedEmail = btoa(email);
+    // URL-encode special characters in the encoded email
+    const urlEncodedEmail = encodeURIComponent(encodedEmail);
+    return urlEncodedEmail;
+  };
+
+  const handleEdit = () => {
+    if (editable) {
+      setShowLoading(true);
+      axios
+        .post(`${process.env.REACT_APP_API_URL}/updatePredictionValues`, {
+          email: state.details.email,
+          breakfast_icr: bicr,
+          breakfast_isf: bisf,
+          lunch_icr: licr,
+          lunch_isf: lisf,
+          snack_icr: sicr,
+          snack_isf: sisf,
+          dinner_icr: dicr,
+          dinner_isf: disf,
+          icr: icr,
+          isf: isf,
+          average_breakfast: avgBreakfast,
+          average_lunch: avgLunch,
+          average_snack: avgSnack,
+          average_dinner: avgSnack,
+          insulin_dose: insulinDose,
+          division_by: divisionBy,
+        })
+        .then((response) => {
+          if (response.data.code == 1) {
+            setShowLoading(false);
+            setEditable(false);
+            toast.success("Values updated successfully!");
+          } else {
+            setShowLoading(false);
+            setEditable(false);
+            toast.error("Some error occured! Try again!");
+          }
+        })
+        .catch((e) => {
+          setShowLoading(false);
+          setEditable(false);
+
+          console.log(e);
+        });
+    } else {
+      setEditable(true);
+    }
+  };
+
   useEffect(() => {
     // const id = state.predProp;
     const x = state.details.email;
@@ -58,6 +128,22 @@ export const PredictionDetails = (props) => {
         console.log("this is prediction list");
         console.log(res);
         setexam(res.data);
+        setAvgBreakfast(res.data.average_breakfast);
+        setAvgLunch(res.data.average_lunch);
+        setAvgSnack(res.data.average_snack);
+        setAvgDinner(res.data.average_dinner);
+        setBicr(res.data.breakfast_icr);
+        setBisf(res.data.breakfast_isf);
+        setLicr(res.data.lunch_icr);
+        setLisf(res.data.lunch_isf);
+        setSicr(res.data.snack_icr);
+        setSisf(res.data.snack_isf);
+        setDicr(res.data.dinner_icr);
+        setDisf(res.data.dinner_isf);
+        setIcr(res.data.icr);
+        setIsf(res.data.isf);
+        setDivisionBy(res.data.division_by);
+        setInsulinDose(res.data.insulin_dose);
       });
 
     //   const todoRef = firebase.database().ref('exercise_entry').child('Prediction_values').child(props.match.params.id);
@@ -97,21 +183,42 @@ export const PredictionDetails = (props) => {
   // }, [])
 
   return (
-    <div className="outmost-scrolling">
-      <SideNavBar details={state.details} email={state.predProp} />
-      <div className="container-main sidebar-margin">
-        <h3 className="all-website-font underline">Food Entries</h3>
-        <h4 className="all-website-font underline">
-          Patient Id : {state.details.email}
-        </h4>
+    <div className="outmost">
+      <span className="sidebar-span2">
+        <SideNavBar details={state.details} email={state.predProp} />
+        <div className="container-main flex-box-div">
+          <div className="pending-patients-requests-outer">
+            <div className="pending-requests-title">
+              <div className="title-edit">
+                <h3 className="diff-requests-title underline2">Prediction</h3>
+                {editable ? (
+                  <button className="save-button" onClick={handleEdit}>
+                    Save
+                    <img src={save} width={20} height={20} />
+                  </button>
+                ) : (
+                  <img
+                    className="edit-save"
+                    onClick={handleEdit}
+                    src={editable ? save : edit}
+                    width={25}
+                    height={25}
+                  />
+                )}
+              </div>
 
-        {/* <h1 className="heading">Insulin Entries</h1>
+              <h4 className="diff-requests-title underline2">
+                Patient Id : {state.details.email}
+              </h4>
+            </div>
+
+            {/* <h1 className="heading">Insulin Entries</h1>
           <h1 className="heading">Patient: {props.match.params.id}</h1> */}
 
-        {exam != null ? (
-          <div>
-            <div class="prediction-details">
-              {/* <Button variant="primary prediction-button">
+            {exam != null ? (
+              <div className="div-req">
+                <div class="prediction-details">
+                  {/* <Button variant="primary prediction-button">
                 <Link
                   className="button-back"
                   // to={"/prediction-edit/" + props.match.params.id}
@@ -120,185 +227,318 @@ export const PredictionDetails = (props) => {
                   Edit Values{" "}
                 </Link>
               </Button> */}
-              <div className="main all-website-font">
-                <table>
-                  <tr>
-                    <th>
-                      Average Breakfast
-                      {/* <hr></hr> */}
-                    </th>
-                    <th>{exam.average_breakfast}</th>
-                  </tr>
-                  <tr>
-                    <th>
-                      Average Dinner
-                      {/* <hr></hr> */}
-                    </th>
-                    <th>
-                      {exam.average_dinner}
-                      {/* <hr></hr> */}
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>
-                      Average Lunch
-                      {/* <hr></hr> */}
-                    </th>
-                    <th>
-                      {exam.average_lunch}
-                      {/* <hr></hr> */}
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>
-                      Average Snack
-                      {/* <hr></hr> */}
-                    </th>
-                    <th>
-                      {exam.average_snack}
-                      {/* <hr></hr> */}
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>
-                      Breakfast ICR
-                      {/* <hr></hr> */}
-                    </th>
-                    <th>
-                      {exam.breakfast_icr}
-                      {/* <hr></hr> */}
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>
-                      Breakfast ISF
-                      {/* <hr></hr> */}
-                    </th>
-                    <th>
-                      {exam.breakfast_isf}
-                      {/* <hr></hr> */}
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>
-                      Lunch ICR
-                      {/* <hr></hr> */}
-                    </th>
-                    <th>
-                      {exam.lunch_icr}
-                      {/* <hr></hr> */}
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>
-                      Lunch ISF
-                      {/* <hr></hr> */}
-                    </th>
-                    <th>
-                      {exam.lunch_isf}
-                      {/* <hr></hr> */}
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>
-                      Snack ICR
-                      {/* <hr></hr> */}
-                    </th>
-                    <th>
-                      {exam.snack_icr}
-                      {/* <hr></hr> */}
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>
-                      Snack ISF
-                      {/* <hr></hr> */}
-                    </th>
-                    <th>
-                      {exam.snack_isf}
-                      {/* <hr></hr> */}
-                    </th>
-                  </tr>
 
-                  <tr>
-                    <th>
-                      Dinner ICR
-                      {/* <hr></hr> */}
-                    </th>
-                    <th>
-                      {exam.dinner_icr}
-                      {/* <hr></hr> */}
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>
-                      Dinner ISF
-                      {/* <hr></hr> */}
-                    </th>
-                    <th>
-                      {exam.dinner_isf}
-                      {/* <hr></hr> */}
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>
-                      Division by
-                      {/* <hr></hr> */}
-                    </th>
-                    <th>
-                      {exam.division_by}
-                      {/* <hr></hr> */}
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>
-                      ICR
-                      {/* <hr></hr> */}
-                    </th>
-                    <th>
-                      {exam.icr}
-                      {/* <hr></hr> */}
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>
-                      Insulin Dose
-                      {/* <hr></hr> */}
-                    </th>
-                    <th>
-                      {exam.insulin_dose}
-                      {/* <hr></hr> */}
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>
-                      ISF
-                      {/* <hr></hr> */}
-                    </th>
-                    <th>
-                      {exam.isf}
-                      {/* <hr></hr> */}
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>Previous Insulin Dose Time</th>
-                    <th>{exam.prev_insulin_time}</th>
-                  </tr>
-                </table>
-              </div>
-              {/* <Button variant="primary prediction-button">
+                  <div className="pending-patients-requests-list2">
+                    <table>
+                      <tr className="no-highlight">
+                        <th>
+                          Average Breakfast
+                          {/* <hr></hr> */}
+                        </th>
+                        <th>
+                          <input
+                            type="number"
+                            value={avgBreakfast}
+                            className="input-style"
+                            onChange={(e) => {
+                              setAvgBreakfast(e.target.value);
+                            }}
+                            disabled={!editable}
+                          />
+                        </th>
+                      </tr>
+                      <tr className="no-highlight">
+                        <th>
+                          Average Dinner
+                          {/* <hr></hr> */}
+                        </th>
+                        <th>
+                          <input
+                            type="number"
+                            value={avgDinner}
+                            className="input-style"
+                            onChange={(e) => {
+                              setAvgDinner(e.target.value);
+                            }}
+                            disabled={!editable}
+                          />
+                        </th>
+                      </tr>
+                      <tr className="no-highlight">
+                        <th>
+                          Average Lunch
+                          {/* <hr></hr> */}
+                        </th>
+                        <th>
+                          <input
+                            type="number"
+                            value={avgLunch}
+                            className="input-style"
+                            onChange={(e) => {
+                              setAvgLunch(e.target.value);
+                            }}
+                            disabled={!editable}
+                          />
+                        </th>
+                      </tr>
+                      <tr className="no-highlight">
+                        <th>
+                          Average Snack
+                          {/* <hr></hr> */}
+                        </th>
+                        <th>
+                          <input
+                            type="number"
+                            value={avgSnack}
+                            className="input-style"
+                            onChange={(e) => {
+                              setAvgSnack(e.target.value);
+                            }}
+                            disabled={!editable}
+                          />
+                          {/* <hr></hr> */}
+                        </th>
+                      </tr>
+                      <tr className="no-highlight">
+                        <th>
+                          Breakfast ICR
+                          {/* <hr></hr> */}
+                        </th>
+                        <th>
+                          <input
+                            type="number"
+                            value={bicr}
+                            className="input-style"
+                            onChange={(e) => {
+                              setBicr(e.target.value);
+                            }}
+                            disabled={!editable}
+                          />
+                          {/* <hr></hr> */}
+                        </th>
+                      </tr>
+                      <tr className="no-highlight">
+                        <th>
+                          Breakfast ISF
+                          {/* <hr></hr> */}
+                        </th>
+                        <th>
+                          <input
+                            type="number"
+                            value={bisf}
+                            className="input-style"
+                            onChange={(e) => {
+                              setBisf(e.target.value);
+                            }}
+                            disabled={!editable}
+                          />
+                          {/* <hr></hr> */}
+                        </th>
+                      </tr>
+                      <tr className="no-highlight">
+                        <th>
+                          Lunch ICR
+                          {/* <hr></hr> */}
+                        </th>
+                        <th>
+                          <input
+                            type="number"
+                            value={licr}
+                            className="input-style"
+                            onChange={(e) => {
+                              setLicr(e.target.value);
+                            }}
+                            disabled={!editable}
+                          />
+                          {/* <hr></hr> */}
+                        </th>
+                      </tr>
+                      <tr className="no-highlight">
+                        <th>
+                          Lunch ISF
+                          {/* <hr></hr> */}
+                        </th>
+                        <th>
+                          <input
+                            type="number"
+                            value={lisf}
+                            className="input-style"
+                            onChange={(e) => {
+                              setLisf(e.target.value);
+                            }}
+                            disabled={!editable}
+                          />
+                          {/* <hr></hr> */}
+                        </th>
+                      </tr>
+                      <tr className="no-highlight">
+                        <th>
+                          Snack ICR
+                          {/* <hr></hr> */}
+                        </th>
+                        <th>
+                          <input
+                            type="number"
+                            value={sicr}
+                            className="input-style"
+                            onChange={(e) => {
+                              setSicr(e.target.value);
+                            }}
+                            disabled={!editable}
+                          />
+                          {/* <hr></hr> */}
+                        </th>
+                      </tr>
+                      <tr className="no-highlight">
+                        <th>
+                          Snack ISF
+                          {/* <hr></hr> */}
+                        </th>
+                        <th>
+                          <input
+                            type="number"
+                            value={sisf}
+                            className="input-style"
+                            onChange={(e) => {
+                              setSisf(e.target.value);
+                            }}
+                            disabled={!editable}
+                          />
+                          {/* <hr></hr> */}
+                        </th>
+                      </tr>
+
+                      <tr className="no-highlight">
+                        <th>
+                          Dinner ICR
+                          {/* <hr></hr> */}
+                        </th>
+                        <th>
+                          <input
+                            type="number"
+                            value={dicr}
+                            className="input-style"
+                            onChange={(e) => {
+                              setDicr(e.target.value);
+                            }}
+                            disabled={!editable}
+                          />
+                          {/* <hr></hr> */}
+                        </th>
+                      </tr>
+                      <tr className="no-highlight">
+                        <th>
+                          Dinner ISF
+                          {/* <hr></hr> */}
+                        </th>
+                        <th>
+                          <input
+                            type="number"
+                            value={disf}
+                            className="input-style"
+                            onChange={(e) => {
+                              setDisf(e.target.value);
+                            }}
+                            disabled={!editable}
+                          />
+                          {/* <hr></hr> */}
+                        </th>
+                      </tr>
+                      <tr className="no-highlight">
+                        <th>
+                          Division by
+                          {/* <hr></hr> */}
+                        </th>
+                        <th>
+                          <input
+                            type="number"
+                            value={divisionBy}
+                            className="input-style"
+                            onChange={(e) => {
+                              setDivisionBy(e.target.value);
+                            }}
+                            disabled={!editable}
+                          />
+                          {/* <hr></hr> */}
+                        </th>
+                      </tr>
+                      <tr className="no-highlight">
+                        <th>
+                          ICR
+                          {/* <hr></hr> */}
+                        </th>
+                        <th>
+                          <input
+                            type="number"
+                            value={icr}
+                            className="input-style"
+                            onChange={(e) => {
+                              setIcr(e.target.value);
+                            }}
+                            disabled={!editable}
+                          />
+                          {/* <hr></hr> */}
+                        </th>
+                      </tr>
+                      <tr className="no-highlight">
+                        <th>
+                          Insulin Dose
+                          {/* <hr></hr> */}
+                        </th>
+                        <th>
+                          <input
+                            type="number"
+                            value={insulinDose}
+                            className="input-style"
+                            onChange={(e) => {
+                              setInsulinDose(e.target.value);
+                            }}
+                            disabled={!editable}
+                          />
+                          {/* <hr></hr> */}
+                        </th>
+                      </tr>
+                      <tr className="no-highlight">
+                        <th>
+                          ISF
+                          {/* <hr></hr> */}
+                        </th>
+                        <th>
+                          <input
+                            type="number"
+                            value={isf}
+                            className="input-style"
+                            onChange={(e) => {
+                              setIsf(e.target.value);
+                            }}
+                            disabled={!editable}
+                          />
+                          {/* <hr></hr> */}
+                        </th>
+                      </tr>
+                      <tr className="no-highlight">
+                        <th>Previous Insulin Dose Time</th>
+                        <th>{exam.prev_insulin_time}</th>
+                      </tr>
+                    </table>
+                  </div>
+                  {/* <Button variant="primary prediction-button">
                 <Link className="button-back" to={"/add-prediction/"}>
                   {" "}
                   Add Patient{" "}
                 </Link>
               </Button> */}
-              <hr></hr>
-            </div>
+                  <hr></hr>
+                </div>
+              </div>
+            ) : (
+              <Loading />
+            )}
           </div>
-        ) : (
-          <Loading />
-        )}
-      </div>
+        </div>
+      </span>
+
+      {showLoading && <Loading />}
     </div>
   );
 };

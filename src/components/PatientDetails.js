@@ -24,9 +24,9 @@ export const PatientDetails = (props) => {
   var { id: email } = useParams();
   const location = useLocation();
   const { details } = location.state;
-  const dob=new Date(details.dob).getFullYear();
-  const yod=new Date(details.year_of_diabetes_diagnosis).getFullYear();
-  const currYear=new Date().getFullYear();
+  const dob = new Date(details.dob).getFullYear();
+  const yod = new Date(details.year_of_diabetes_diagnosis).getFullYear();
+  const currYear = new Date().getFullYear();
 
   const [appUsage, setAppUsage] = useState(details.user_app_usage_eligiblity);
   const [prediction, setPrediction] = useState(
@@ -74,7 +74,6 @@ export const PatientDetails = (props) => {
     return urlEncodedEmail;
   };
 
-
   const decryptUrlToEmail = (encryptedUrl) => {
     // URL-decode the URL-friendly code
     const urlDecodedEmail = decodeURIComponent(encryptedUrl);
@@ -110,76 +109,85 @@ export const PatientDetails = (props) => {
   // }, [])
 
   return (
-    <div className="outmost-scrolling">
+    <div className="outmost">
       {loading ? <Loading /> : null}
       {/* <Navbar></Navbar> */}
-      <SideNavBar email={email} details={details} />
-      <div className="container-main sidebar-margin">
-        <h3 className="all-website-font underline">Patient Details</h3>
-        <h2 className="head-2 all-website-font underline">
-        Patient Id: {decryptUrlToEmail(email)}
-        </h2>
-        <div className="main all-website-font">
-          <table>
-            <tr>
-              <td>Name</td>
-              <td>{details.name}</td>
-            </tr>
-            <tr>
-              <td>Sex</td>
-              <td>{details.sex}</td>
-            </tr>
-            <tr>
-              <td>Weight</td>
-              <td>{`${details.height} cm`}</td>
-            </tr>
-            <tr>
-              <td>Height</td>
-              <td>{`${details.height} kg`}</td>
-            </tr>
-            <tr>
-              <td>T1 Life Features Access</td>
-              <td>
-                {
-                  <ToggleButton
-                    value={appUsage}
-                    onToggle={handleChangeAppUsageToggle}
-                  />
-                  // Different labels example...
+      <span className="sidebar-span2">
+        <SideNavBar email={email} details={details} />
+        {/* sidebar-margin  */}
+        <div className="container-main flex-box-div">
+          <div className="pending-patients-requests-outer">
+            <div className="pending-requests-title">
+              <h3 className="diff-requests-title underline2">Patient Details</h3>
+              <h4 className="diff-requests-title underline2">
+                Patient Id: {decryptUrlToEmail(email)}
+              </h4>
+            </div>
+            <div className="div-req">
+              <div className="pending-patients-requests-list2">
+                <table>
+                  <tr>
+                    <td>Name</td>
+                    <td>{details.name}</td>
+                  </tr>
+                  <tr>
+                    <td>Sex</td>
+                    <td>{details.sex}</td>
+                  </tr>
+                  <tr>
+                    <td>Weight</td>
+                    <td>{`${details.height} cm`}</td>
+                  </tr>
+                  <tr>
+                    <td>Height</td>
+                    <td>{`${details.height} kg`}</td>
+                  </tr>
+                  <tr>
+                    <td>T1 Life Features Access</td>
+                    <td>
+                      {
+                        <ToggleButton
+                          value={appUsage}
+                          onToggle={handleChangeAppUsageToggle}
+                        />
+                        // Different labels example...
 
-                  // 'inactiveLabel' - a string or component to display when OFF.
-                  // 'activeLabel' - a string or component to display when ON.
-                }
-              </td>
-            </tr>
-            <tr>
-              <td>Insulin Prediction</td>
-              <td>
-                {
-                  <ToggleButton
-                    value={prediction}
-                    onToggle={handleChangePrediction}
-                  />
-                }
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Total Daily Doses (Basal + Bolus) recorded during onboarding
-              </td>
-              <td>{`${details.total_doses} units`}</td>
-            </tr>
-            <tr>
-              <td>Age</td>
-              <td>{`${currYear-dob} years`}</td>
-            </tr>
-            <tr>
-              <td>Diabetes diagnosis year</td>
-              <td>{yod}</td>
-            </tr>
-          </table>
-        </div>
-        {/* <div className="patient-details">
+                        // 'inactiveLabel' - a string or component to display when OFF.
+                        // 'activeLabel' - a string or component to display when ON.
+                      }
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Insulin Prediction</td>
+                    <td>
+                      {
+                        <ToggleButton
+                          value={prediction}
+                          onToggle={handleChangePrediction}
+                        />
+                      }
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Total Daily Doses (Basal + Bolus) recorded during
+                      onboarding
+                    </td>
+                    <td>{`${details.total_doses} units`}</td>
+                  </tr>
+                  <tr>
+                    <td>Age</td>
+                    <td>{`${currYear - dob} years`}</td>
+                  </tr>
+                  <tr>
+                    <td>Diabetes diagnosis year</td>
+                    <td>{yod}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          {/* <div className="patient-details">
           <div className="patient-details">
             <Card className="carddisplay3 news-card" style={{ width: "20rem" }}>
               <Card.Body>
@@ -308,7 +316,8 @@ export const PatientDetails = (props) => {
 
           </div>
         </div> */}
-      </div>
+        </div>
+      </span>
     </div>
   );
 };

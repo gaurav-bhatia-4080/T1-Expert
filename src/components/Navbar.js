@@ -46,7 +46,7 @@ function Navbar(props) {
   // render(){
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-light bg-dark">
+      <nav className="">
         <div class="container" className="outmost-div-navbar">
           {/* <a className="navbar-brand" href="#"></a> */}
           {/* <button
@@ -125,7 +125,11 @@ function Navbar(props) {
         </div>
       </nav>
       {showLogoutOptions ? (
-        <Logout user={props.user} setUser={props.setUser} hideProfile={handleHideProfile} />
+        <Logout
+          user={props.user}
+          setUser={props.setUser}
+          hideProfile={handleHideProfile}
+        />
       ) : (
         <div></div>
       )}

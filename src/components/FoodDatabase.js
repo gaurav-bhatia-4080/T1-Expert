@@ -62,7 +62,7 @@ export const FoodDatabase = (props) => {
           <div className="App container-main monthrecord">
             <h3 className="all-website-font underline">Food database</h3>
 
-            <div class="main all-website-font">
+            <div className="main all-website-font">
               <table>
                 <thead>
                   <tr>

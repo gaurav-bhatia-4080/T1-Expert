@@ -3,6 +3,7 @@ import React from "react";
 import { Component } from "react";
 import Navbar from "./Navbar";
 import axios from "axios";
+import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import googleOneTap from "google-one-tap";
@@ -44,10 +45,7 @@ function Landing(props) {
     // .catch(e=>{
     //   console.log(e);
     // })
-    window.open(
-      `${process.env.REACT_APP_API_URL}/auth/web/google`,
-      "_self"
-    );
+    window.open(`${process.env.REACT_APP_API_URL}/auth/web/google`, "_self");
 
     // window.location.href=`${process.env.REACT_APP_API_URL}/auth/web/google/callback`;
     // auth/google/callback
@@ -214,35 +212,40 @@ function Landing(props) {
         <div className="welcome-text">Welcome to T1 Expert</div>
         <div className="Sign-in-div">
           <h4 className="all-website-arapey-font bold-font">
-            Welcome to T1 Expert!
+            Welcome to T1 Expert
           </h4>
 
           <div className="google-button-container">
-            {/* <GoogleOAuthProvider> 
-               <GoogleLogin
+            {/* <GoogleOAuthProvider>
+              <GoogleLogin
+                onClick={googleAuth}
+                ux_mode="redirect"
+                shape="pill"
+                theme="filled_blue"
+                use_fedcm_for_prompt={false}
+                ic
+              ></GoogleLogin>
+            </GoogleOAuthProvider> */}
+            <button class="google-login-button" onClick={googleAuth}>
+              <div className="google-span">
+                <FcGoogle className="google-icon" />{" "}
+              </div>
+              <span className="google-title">Continue with Google</span>
+            </button>
+            {/* <GoogleButton
               onClick={googleAuth}
-              ux_mode="redirect"
-              shape="pill"
-
-              theme="filled_blue"
-              use_fedcm_for_prompt={false}
-              ic
-              >
-
-              </GoogleLogin> 
-             </GoogleOAuthProvider> */}
-            <GoogleButton
-              onClick={googleAuth}
-              className="google-button"
+              className="google-button-rectangle"
               type="dark"
+              im
               label="Continue with Google"
-            ></GoogleButton>
+            ></GoogleButton> */}
           </div>
 
           <p className="all-website-arapey-font">
-            By continuing, you agree to T1 Expert's <u>Terms of Use.</u>
+            By continuing, you agree to T1 Expert's{" "}
+            <u className="blue-color">Terms of Use.</u>
             <br></br>
-            Read our <u>Privacy Policy.</u>
+            Read our <u className="blue-color">Privacy Policy.</u>
           </p>
           <p className="all-website-arapey-font"></p>
         </div>

@@ -17,6 +17,23 @@ import exit from "../img/exit.png";
 import { css } from "glamor";
 
 const Logout = (props) => {
+  const getName = () => {
+    if (
+      props.user.displayName.substr(0, 4).toLowerCase() != "dr. " &&
+      props.user.displayName.substr(0, 3) != "dr "
+    ) {
+      return "Dr. " + props.user.displayName;
+    } else if (props.user.displayName.substr(0, 3).toLowerCase() == "dr ") {
+      return "Dr. " + props.user.displayName.substr(3);
+    } else {
+      let s =
+        props.user.displayName[0].toUpperCase() +
+        props.user.displayName[1].toLowerCase() +
+        props.user.displayName.substr(2);
+      return s;
+    }
+  };
+
   const logoutClick = () => {
     // ,{},{withCredentials:true}
     window.open(`${process.env.REACT_APP_API_URL}/auth/web/logout`, "_self");
@@ -42,7 +59,7 @@ const Logout = (props) => {
       <div className="logout-div">
         <div className="profile-pic-name">
           <img src={`${props.user.photos[0].value}`} width={35} height={35} />
-          <span>{props.user.displayName} </span>
+          <span>{getName()} </span>
         </div>
         <div className="logout-icon-div">
           <img src={logout} width={25} height={25} />

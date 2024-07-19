@@ -137,7 +137,7 @@ export const BgDetails = (props) => {
   useEffect(() => {
     console.log("UIOOOOOOOOOOO" + state);
     const x = state.details.email;
-    const id=encryptEmailToUrl(x);
+    const id = encryptEmailToUrl(x);
 
     // const newEmail = state.bgProp
 
@@ -186,78 +186,90 @@ export const BgDetails = (props) => {
   //   });
 
   return (
-    <div className="outmost-scrolling">
-      <SideNavBar details={state.details} email={state.bgprop} />
-      <div className="container-main sidebar-margin">
-        <h3 className="all-website-font underline">Blood Glucose Trend</h3>
-        <h4 className="all-website-font underline">
-          Patient Id : {state.details.email}
-        </h4>
-        <button
-          className="all-website-font download-button"
-          onClick={exporthere}
-        >
-          Download Report
-          <img src={download} width={25} height={25} />
-        </button>
-      {/* <h1 className="heading">Blood Glucose Trend</h1> */}
-      {/* {props.match.params.id}           */}
-      {/* <h1 className="heading">Patient: {state.bgProp}</h1> */}
-      {/* <Button variant="primary" onClick={exporthere}>
+    <div className="outmost">
+      <span className="sidebar-span2">
+        <SideNavBar details={state.details} email={state.bgprop} />
+        <div className="container-main flex-box-div">
+          <div className="pending-patients-requests-outer">
+            <div className="pending-requests-title">
+              <h3 className="diff-requests-title underline2">
+                Blood Glucose Trend
+              </h3>
+              <h4 className="diff-requests-title underline2">
+                Patient Id : {state.details.email}
+              </h4>
+              <button
+                className="all-website-font download-button"
+                onClick={exporthere}
+              >
+                Download Report
+                <img src={download} width={25} height={25} />
+              </button>
+            </div>
+            {/* <h1 className="heading">Blood Glucose Trend</h1> */}
+            {/* {props.match.params.id}           */}
+            {/* <h1 className="heading">Patient: {state.bgProp}</h1> */}
+            {/* <Button variant="primary" onClick={exporthere}>
         Download BG Record
       </Button> */}
-      {exam!=null? (
-        <div className="all-website-font">
-          {exam.map((varrr) => {
-            let tryth = {
-              CURRENT_BG: varrr.current_bg,
-              CURRENT_DATE: new Date(varrr.date).toLocaleDateString(),
-              CURRENT_TIME: varrr.time,
-            };
-            let obj = uniqueNames.find(
-              (o) =>
-                o.CURRENT_DATE === new Date(varrr.date).toLocaleDateString() &&
-                o.CURRENT_TIME === varrr.time
-            );
-            // console.log(obj)
-            if (obj == null) {
-              uniqueNames.push(tryth);
-              Listid.push(parseInt(varrr.current_bg, 10) + 1);
-              Listin.push(new Date(varrr.date).toLocaleDateString());
-            }
-          })}
-          <div className="main">
-            {" "}
-            <Line className="BgGraph" data={data} />
+            {exam != null ? (
+              <div className="div-req">
+                <div className="pending-patients-requests-list2">
+                  {/* {exam.map((varrr) => {
+                    let tryth = {
+                      CURRENT_BG: varrr.current_bg,
+                      CURRENT_DATE: new Date(varrr.date).toLocaleDateString(),
+                      CURRENT_TIME: varrr.time,
+                    };
+                    let obj = uniqueNames.find(
+                      (o) =>
+                        o.CURRENT_DATE ===
+                          new Date(varrr.date).toLocaleDateString() &&
+                        o.CURRENT_TIME === varrr.time
+                    );
+                    // console.log(obj)
+                    if (obj == null) {
+                      uniqueNames.push(tryth);
+                      Listid.push(parseInt(varrr.current_bg, 10) + 1);
+                      Listin.push(new Date(varrr.date).toLocaleDateString());
+                    }
+                  })} */}
+                  <div className="main">
+                    {" "}
+                    <Line className="BgGraph" data={data} />
+                  </div>
+                  <h3 className="all-website-font underline">
+                    Blood Glucose Entries
+                  </h3>
+                  {
+                    <table className="BGtable" id="my-table">
+                      <thead>
+                        <tr className="table2">
+                          <th>Blood Glucose</th>
+                          <th>Date</th>
+                          <th>Time</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {uniqueNames.map((varrr) => (
+                          <tr>
+                            <td>{varrr.CURRENT_BG}</td>
+                            <td>{varrr.CURRENT_DATE}</td>
+                            <td>{varrr.CURRENT_TIME}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  }
+                </div>
+              </div>
+            ) : (
+              <Loading />
+            )}
           </div>
-          <h3 className="all-website-font underline">Blood Glucose Entries</h3>
-          {
-            <table className="BGtable" id="my-table">
-              <thead>
-              <tr className="table2">
-                <th>Blood Glucose</th>
-                <th>Date</th>
-                <th>Time</th>
-              </tr>
-              </thead>
-              <tbody>              
-              {uniqueNames.map((varrr) => (
-                <tr>
-                  <td>{varrr.CURRENT_BG}</td>
-                  <td>{varrr.CURRENT_DATE}</td>
-                  <td>{varrr.CURRENT_TIME}</td>
-                </tr>
-              ))}
-              </tbody>              
-            </table>
-          }
         </div>
-      ) : (
-        <Loading/>
-      )}
+      </span>
     </div>
-    </div>
-
   );
 };
 
