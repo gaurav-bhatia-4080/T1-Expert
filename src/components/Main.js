@@ -55,7 +55,10 @@ function Main({ user, setUser }) {
     return urlEncodedEmail;
   };
   const [selected, setSelected] = useState(
-    user.email == "jackdawson14111@gmail.com" ? "doctor" : "patients"
+    user.email == "samwilson14111@gmail.com" ||
+      user.email == "docrajivsingla@gmail.com"
+      ? "doctor"
+      : "patients"
   );
 
   const handleSelect = (option) => {
@@ -159,7 +162,8 @@ function Main({ user, setUser }) {
         {/* <IconContext.Provider className="margin-padding" value={{ color: "#fff" }}> */}
         <nav className="nav-menu2">
           <ul className="nav-menu-items">
-            {user.email == "jackdawson14111@gmail.com" && (
+            {(user.email == "samwilson14111@gmail.com" ||
+              user.email == "docrajivsingla@gmail.com") && (
               <div>
                 <div className="sections-gen-req"> General</div>
 
@@ -240,7 +244,8 @@ function Main({ user, setUser }) {
         {/* </span> */}
         {/* <span> */}
         <div className="flex-box-div">
-          {user.email == "jackdawson14111@gmail.com" &&
+          {(user.email == "samwilson14111@gmail.com" ||
+            user.email == "docrajivsingla@gmail.com") &&
             selected == "doctor" && (
               <div className="pending-patients-requests-outer">
                 <div className="pending-requests-title">

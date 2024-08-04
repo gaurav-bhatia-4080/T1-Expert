@@ -67,7 +67,7 @@ const NewRequestSent = (props) => {
                 For any queries, you can reach out to us on
               </div>
               <div className="motto-inside-divs motto-inside-divs-email">
-                delhiendocrinologist@gmail.com
+                docrajivsingla@gmail.com
               </div>
             </div>
           </div>
