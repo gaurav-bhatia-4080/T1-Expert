@@ -1,0 +1,39 @@
+/* .request-card-item {
+  position: relative;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+} */
+
+/* .request-card-item-hover-color:hover {
+} */
+
+.overlay {
+  display: none; /* Initially hidden */
+  position: absolute; /* Position overlay absolutely */
+  top: 0; /* Adjust position as needed */
+  left: 0; /* Adjust position as needed */
+  right: 0; /* Adjust position as needed */
+  bottom: 0; /* Adjust position as needed */
+  align-items: center;
+  justify-content: center;
+  background: hsla(0, 0%, 94%, 0.502); /* White background with 50% transparency */
+  padding: 8px;
+  border-radius: 8px; /* Match the card's border radius */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.request-card-item:hover .overlay {
+  display: flex; /* Show overlay on hover */
+}
+
+.save-button-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  background-color: black;
+  justify-content: center;
+  flex-shrink: 0;
+}

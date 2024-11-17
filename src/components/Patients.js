@@ -164,6 +164,7 @@ export const Patients = (props) => {
                           details: getDetails(varr.email),
                         }}
                       >
+                        
                         {" "}
                         {varr.email}
                       </NavLink>

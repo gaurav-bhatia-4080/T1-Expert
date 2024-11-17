@@ -1,0 +1,84 @@
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full height to see the spinner better */
+}
+
+/* Base style for circles */
+.circle {
+  border-radius: 50%;
+  border: 3px solid transparent;
+}
+
+/* Outer circle */
+.outer-circle {
+  width: 35px;
+  height: 35px;
+  box-sizing: content-box;
+  position: absolute;
+  border-top-color: black; 
+  border-left-color: black;
+  border-right-color:black;
+  animation: spin-clockwise 1s linear infinite;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+
+/* Inner circle */
+.inner-circle {
+  width:25px;
+  height: 25px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* position: relative; */
+  border-top-color: rgb(49, 49, 49); 
+  border-left-color:rgb(49, 49, 49);
+  border-right-color:rgb(49, 49, 49);
+  animation: spin-counterclockwise 1s linear infinite;
+}
+.inner-circle-wrapper {
+  position: absolute;
+  top: 0; /* Same position as outer circle */
+  left: 0; /* Same position as outer circle */
+  width: 100%;
+  height: 100%;
+  animation: spin-counterclockwise 1s linear infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.logo-circle{
+  width: 100%;
+  height:100%;
+  /* background: url("../img/t1Expert2.png") no-repeat center center/cover; */
+  transform-origin: center;
+  border-radius: 50%;
+  /* animation: spin-clockwise 1s linear infinite; */
+
+
+}
+/* Keyframes for outer circle clockwise rotation */
+@keyframes spin-clockwise {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Keyframes for inner circle counterclockwise rotation */
+@keyframes spin-counterclockwise {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}

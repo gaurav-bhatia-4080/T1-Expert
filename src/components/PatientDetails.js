@@ -32,6 +32,7 @@ export const PatientDetails = (props) => {
   const [prediction, setPrediction] = useState(
     details.user_insulin_prediction_allowed
   );
+  
   const handleChangeAppUsageToggle = () => {
     setLoading(true);
     setAppUsage(!appUsage);

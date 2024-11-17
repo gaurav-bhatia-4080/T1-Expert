@@ -13,23 +13,31 @@ import RequestListItem from "./RequestListItem";
 import "react-toastify/dist/ReactToastify.css";
 import logout from "../img/logout2.png";
 import exit from "../img/exit.png";
+import { AiOutlineUser } from "react-icons/ai";
 
+import { FaSignOutAlt } from "react-icons/fa";
 import { css } from "glamor";
+import { useRecoilState } from "recoil";
+import { currentUser } from "../store/atoms/userState";
 
 const Logout = (props) => {
+  const [user, setUser]=useRecoilState(currentUser);
   const getName = () => {
+    console.log(user.photos[0].picture);
+    console.log("this is the output jo maine beja hai");
+    console.log(user);
     if (
-      props.user.displayName.substr(0, 4).toLowerCase() != "dr. " &&
-      props.user.displayName.substr(0, 3) != "dr "
+      user.displayName.substr(0, 4).toLowerCase() != "dr. " &&
+      user.displayName.substr(0, 3) != "dr "
     ) {
-      return "Dr. " + props.user.displayName;
-    } else if (props.user.displayName.substr(0, 3).toLowerCase() == "dr ") {
-      return "Dr. " + props.user.displayName.substr(3);
+      return "Dr. " + user.displayName;
+    } else if (user.displayName.substr(0, 3).toLowerCase() == "dr ") {
+      return "Dr. " + user.displayName.substr(3);
     } else {
       let s =
-        props.user.displayName[0].toUpperCase() +
-        props.user.displayName[1].toLowerCase() +
-        props.user.displayName.substr(2);
+        user.displayName[0].toUpperCase() +
+        user.displayName[1].toLowerCase() +
+        user.displayName.substr(2);
       return s;
     }
   };
@@ -42,7 +50,7 @@ const Logout = (props) => {
     //     withCredentials: true,
     //   })
     //   .then((res) => {
-    //     // props.setUser(res.data.user)
+    //     // setUser(res.data.user)
     //     // res.clearCookie("My Cookie");
     //     // if(res.success){
 
@@ -51,18 +59,48 @@ const Logout = (props) => {
     //     window.location.reload();
 
     //     // }
-    //     // props.setUser(null);
+    //     // setUser(null);
     //   });
   };
   return (
     <div className="logout-outmost" onClick={props.hideProfile}>
-      <div className="logout-div">
+      <div className="logout-div all-scrollbar-style-none">
         <div className="profile-pic-name">
-          <img src={`${props.user.photos[0].value}`} width={35} height={35} />
-          <span>{getName()} </span>
+          <div>
+            {/* <AiOutlineUser size={50} color="white" /> */}
+            <img
+              src={user.picture.replace("http://", "https://")}
+              width={37}
+              height={37}
+              style={{ marginBottom: "10px" }}
+            />
+          </div>
+          {/* <div style={{ paddingLeft: "10px" }}> */}
+          <div
+            className="all-website-font"
+            style={{ color: "white", fontSize: "17px" }}
+          >
+            {getName()}{" "}
+          </div>
+          <div
+            className="all-website-font"
+            style={{ color: "lightgray", fontSize: "15px" }}
+          >
+            {user.email}
+          </div>
+          <div style={{ marginTop: "5px" }}>
+            {user.email === "samwilson14111@gmail.com" ||
+            user.email === "docrajivsingla@gmail.com" ? (
+              <div className="admin-text">Admin</div>
+            ) : (
+              <div className="user-text">User</div>
+            )}{" "}
+          </div>
+
+          {/* </div> */}
         </div>
         <div className="logout-icon-div">
-          <img src={logout} width={25} height={25} />
+          <FaSignOutAlt size={24} color="#D3D3D3" />{" "}
           <span onClick={logoutClick}>Log out</span>
         </div>
       </div>

@@ -9,6 +9,7 @@ import SideNavBar from "./SideNavBar";
 import Loading from "./Loading";
 import download from "../img/download.png";
 
+
 export const FoodDetails = (props) => {
   const location = useLocation();
   const { state } = location;
