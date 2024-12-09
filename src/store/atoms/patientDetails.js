@@ -7,6 +7,7 @@ const encryptEmailToUrl = (email) => {
   const urlEncodedEmail = encodeURIComponent(encodedEmail);
   return urlEncodedEmail;
 };
+
 export const getCurrPatientBasicInfo = atomFamily({
     key: "getCurrPatientBasicInfo",
     default: selectorFamily({
@@ -81,6 +82,33 @@ export const getCurrPatientBasicInfo = atomFamily({
         },
     }),
   });
+
+
+export const getFoodEntries = atomFamily({
+  key: "getFoodEntries",
+  default: selectorFamily({
+    key: "getFoodEntriesSelector",
+    get:
+      (id) =>
+      async ({ get }) => {
+        try {
+          const response = await axios.get(
+            `${
+              process.env.REACT_APP_API_URL
+            }/getPatientFoodEntries/${encryptEmailToUrl(id)}`,
+            {
+              withCredentials: true,
+            }
+          );
+          console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  ", id);
+          return response.data;
+        } catch (error) {
+          console.error("Error fetching pending patients:", error);
+          throw error; // Handle API errors gracefully
+        }
+      },
+  }),
+});
 
     
 export const getPredictionExtraDetails = atomFamily({

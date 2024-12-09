@@ -37,8 +37,13 @@ const ICRTrends = () => {
   const { bicr, licr, dicr } = icrLists;
 
   // Prepare data for the chart
+
   const data = {
-    labels: bicr.map((_, index) => `Point ${index + 1}`), // Assuming all lists have the same length
+    labels: bicr.map((x, index) =>
+      {console.log(x);
+        console.log(new Date(x.updation_time));
+      return new Date(parseInt(x.updation_time)).toLocaleDateString();
+  }), // Assuming all lists have the same length
     datasets: [
       {
         label: "BICR",
@@ -83,7 +88,7 @@ const ICRTrends = () => {
       x: {
         title: {
           display: true,
-          text: "Points",
+          text: "Updation Dates",
         },
       },
       y: {

@@ -12,7 +12,10 @@ import {
   getPatientBG,
   getPredictionExtraDetails,
   getPredictionEntriesWithStatus,
+  getFoodEntries,
 } from "../store/atoms/patientDetails.js";
+
+import { getfooddb } from "../store/atoms/listsForMain.js";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 export const MonthRecord = (props) => {
@@ -38,6 +41,11 @@ export const MonthRecord = (props) => {
     getPredictionEntriesWithStatus(decodeURIComponent(id))
   );
 
+  // const [examfood, setexamfood] = useRecoilState(
+  //   getFoodEntries(decodeURIComponent(id))
+  // );
+
+  const examfood = useRecoilValue(getfooddb);
 
   console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
   console.log(examprediction);
@@ -178,126 +186,153 @@ export const MonthRecord = (props) => {
           </div> */}
         {exam != null && exambg != null && examinsulin != null ? (
           // className="div-req"
-          <div >
-{/* className="pending-patients-requests-list2" */}
-            <div >
-              {
-              exam.map((varrr) => {
+          <div>
+            {/* className="pending-patients-requests-list2" */}
+            <div>
+              {exam.map((varrr) => {
+                console.log("TIS IS THE DATE TO CHECK");
+                console.log(varrr.date);
+                console.log(new Date(varrr.date).toLocaleDateString());
+                const food_name = varrr.food_name
+                  .split("[")
+                  .map((x) => x.trim())[0];
+                const name = examfood.find((x) => x.name == food_name);
+                const quantity = varrr.food_quantity;
+                const carbs = name.carbs * quantity;
                 let obj = uniqueNames.find(
                   (o) =>
-                    o.CURRENT_DATE ==
-                      new Date(varrr.date).toLocaleDateString()
+                    o.CURRENT_DATE == new Date(varrr.date).toLocaleDateString()
                 );
                 console.log("date");
-                console.log(new Date(varrr.date).toLocaleDateString())
+                console.log(new Date(varrr.date).toLocaleDateString());
                 if (obj == null) {
-                  let obj2 = uniqueNames.find(
-                    (o) =>
-                      o.CURRENT_DATE ===
-                      new Date(varrr.date).toLocaleDateString()
-                  );
-                  if (obj2 == null) {
-                    if (varrr.food_category == "Breakfast") {
-                      let tryth = {
-                        Fasting: varrr.current_bg,
-                        abf: "--",
-                        bl: "--",
-                        al: "--",
-                        bd: "--",
-                        ad: "--",
-                        threeam: "--",
-                        CURRENT_DATE: new Date(varrr.date).toLocaleDateString(),
-                        CURRENT_TIME: varrr.time,
-                        CURRENT_BG: varrr.current_bg,
-                        Fastingin: "--",
-                        abfin: "--",
-                        blin: "--",
-                        alin: "--",
-                        bdin: "--",
-                        adin: "--",
-                        threeamin: "--",
-                      };
-                      uniqueNames.push(tryth);
-                    } else if (varrr.food_category == "Lunch") {
-                      let tryth = {
-                        Fasting: "--",
-                        abf: "--",
-                        bl: varrr.current_bg,
-                        al: "--",
-                        bd: "--",
-                        ad: "--",
-                        threeam: "--",
-                        CURRENT_DATE: new Date(varrr.date).toLocaleDateString(),
-                        CURRENT_TIME: varrr.time,
-                        CURRENT_BG: varrr.current_bg,
-                        Fastingin: "--",
-                        abfin: "--",
-                        blin: "--",
-                        alin: "--",
-                        bdin: "--",
-                        adin: "--",
-                        threeamin: "--",
-                      };
-                      uniqueNames.push(tryth);
-                    } else if (varrr.food_category == "Dinner") {
-                      let tryth = {
-                        Fasting: "--",
-                        abf: "--",
-                        bl: "--",
-                        al: "--",
-                        bd: varrr.current_bg,
-                        ad: "--",
-                        threeam: "--",
-                        CURRENT_DATE: new Date(varrr.date).toLocaleDateString(),
-                        CURRENT_TIME: varrr.time,
-                        CURRENT_BG: varrr.current_bg,
-                        Fastingin: "--",
-                        abfin: "--",
-                        blin: "--",
-                        alin: "--",
-                        bdin: "--",
-                        adin: "--",
-                        threeamin: "--",
-                      };
-                      uniqueNames.push(tryth);
-                    }
-                  } 
+                  if (varrr.food_category == "Breakfast") {
+                    console.log("GOT NULL DATE");
+                    console.log(new Date(varrr.date).toLocaleDateString());
+
+                    let tryth = {
+                      Fasting: varrr.current_bg,
+                      abf: "--",
+                      bcarbs: carbs.toFixed(2),
+                      lcarbs: "--",
+                      dcarbs: "--",
+                      bl: "--",
+                      al: "--",
+                      bd: "--",
+                      ad: "--",
+                      threeam: "--",
+                      CURRENT_DATE: new Date(varrr.date).toLocaleDateString(),
+                      CURRENT_TIME: varrr.time,
+                      CURRENT_BG: varrr.current_bg,
+                      Fastingin: "--",
+                      abfin: "--",
+                      blin: "--",
+                      alin: "--",
+                      bdin: "--",
+                      adin: "--",
+                      threeamin: "--",
+                    };
+                    uniqueNames.push(tryth);
+                    console.log(tryth);
+                  } else if (varrr.food_category == "Lunch") {
+                    let tryth = {
+                      Fasting: "--",
+                      abf: "--",
+                      bl: varrr.current_bg,
+                      al: "--",
+                      bd: "--",
+                      ad: "--",
+                      threeam: "--",
+                      CURRENT_DATE: new Date(varrr.date).toLocaleDateString(),
+                      CURRENT_TIME: varrr.time,
+                      CURRENT_BG: varrr.current_bg,
+                      Fastingin: "--",
+                      abfin: "--",
+                      blin: "--",
+                      alin: "--",
+                      bdin: "--",
+                      adin: "--",
+                      threeamin: "--",
+                      bcarbs: "--",
+                      lcarbs: carbs.toFixed(2),
+                      dcarbs: "--",
+                    };
+                    uniqueNames.push(tryth);
+                  } else if (varrr.food_category == "Dinner") {
+                    let tryth = {
+                      Fasting: "--",
+                      abf: "--",
+                      bl: "--",
+                      al: "--",
+                      bd: varrr.current_bg,
+                      ad: "--",
+                      threeam: "--",
+                      CURRENT_DATE: new Date(varrr.date).toLocaleDateString(),
+                      CURRENT_TIME: varrr.time,
+                      CURRENT_BG: varrr.current_bg,
+                      Fastingin: "--",
+                      abfin: "--",
+                      blin: "--",
+                      alin: "--",
+                      bdin: "--",
+                      adin: "--",
+                      threeamin: "--",
+                      bcarbs: "--",
+                      lcarbs: "--",
+                      dcarbs: carbs.toFixed(2),
+                    };
+                    uniqueNames.push(tryth);
+                  }
                   // uniqueNames.push(tryth);
                   // Listid.push(parseInt(varrr.CURRENT_BG , 10 ) + 1);
                   // Listin.push(varrr.CURRENT_DATE)
-                }
-
-                else {
+                } else {
                   let tryth = obj;
                   if (varrr.food_category == "Lunch") {
-                    uniqueNames.pop(tryth);
-                    tryth.bl = varrr.current_bg;
-                    uniqueNames.push(tryth);
+                    // uniqueNames.pop(tryth);
+                    if (obj.lcarbs != "--") {
+                      let prevcarbs = parseFloat(obj.lcarbs);
+                      obj.lcarbs = (prevcarbs + carbs).toFixed(2);
+                    } else {
+                      obj.lcarbs = carbs.toFixed(2);
+                    }
+                    obj.bl = varrr.current_bg;
+                    // uniqueNames.push(tryth);
                   } else if (varrr.food_category == "Breakfast") {
-                    uniqueNames.pop(tryth);
-                    tryth.Fasting = varrr.current_bg;
-                    uniqueNames.push(tryth);
-                  } else if (varrr.food_category == "Dinner") {
-                    uniqueNames.pop(tryth);
-                    tryth.bd = varrr.current_bg;
-                    uniqueNames.push(tryth);
-                  }
-                }                
-              })}
-              {
+                    // uniqueNames.pop(tryth);
+                    if (obj.bcarbs != "--") {
+                      let prevcarbs = parseFloat(obj.bcarbs);
+                      obj.bcarbs = (prevcarbs + carbs).toFixed(2);
+                    } else {
+                      obj.bcarbs = carbs.toFixed(2);
+                    }
 
-              examprediction.map((varrr) => {
+                    obj.Fasting = varrr.current_bg;
+                    // uniqueNames.push(tryth);
+                  } else if (varrr.food_category == "Dinner") {
+                    // uniqueNames.pop(tryth);
+                    if (obj.dcarbs != "--") {
+                      let prevcarbs = parseFloat(obj.dcarbs);
+                      obj.dcarbs = (prevcarbs + carbs).toFixed(2);
+                    } else {
+                      obj.dcarbs = carbs.toFixed(2);
+                    }
+
+                    obj.bd = varrr.current_bg;
+                    // uniqueNames.push(tryth);
+                  }
+                }
+              })}
+              {examprediction.map((varrr) => {
                 console.log("examprediction executed");
 
-                let obj = uniqueNames.find(
-                  (o) =>{
-                    console.log("insideee");
-                    return o.CURRENT_DATE === new Date(varrr.date).toLocaleDateString()
-
-                  }
-                );
-                if(obj)
-                console.log(obj.CURRENT_DATE);
+                let obj = uniqueNames.find((o) => {
+                  console.log("insideee");
+                  return (
+                    o.CURRENT_DATE == new Date(varrr.date).toLocaleDateString()
+                  );
+                });
+                if (obj) console.log(obj.CURRENT_DATE);
                 console.log(new Date(varrr.date).toLocaleDateString());
 
                 let acceptedAmount = -1;
@@ -305,7 +340,11 @@ export const MonthRecord = (props) => {
                 let categoryToCheckForAccepted =
                   "Pre-" + categoryToCheck.toLowerCase();
 
-                if (varrr.status == "Rejected" && varrr.time != "Time" && (varrr.date in examinsulinDic)) {
+                if (
+                  varrr.status == "Rejected" &&
+                  varrr.time != "Time" &&
+                  varrr.date in examinsulinDic
+                ) {
                   acceptedAmount =
                     examinsulinDic[varrr.date][categoryToCheckForAccepted];
                 }
@@ -336,8 +375,13 @@ export const MonthRecord = (props) => {
                       bdin: "--",
                       adin: "--",
                       threeamin: "--",
+                      bcarbs: "--",
+                      dcarbs: "--",
+                      lcarbs: "--",
                     };
-                    console.log("this is the insuldfdf dfldf dfkd fkdjf predicitton");
+                    console.log(
+                      "this is the insuldfdf dfldf dfkd fkdjf predicitton"
+                    );
                     console.log(tryth);
 
                     uniqueNames.push(tryth);
@@ -350,6 +394,10 @@ export const MonthRecord = (props) => {
                       bd: "--",
                       ad: "--",
                       threeam: "--",
+                      bcarbs: "--",
+                      dcarbs: "--",
+                      lcarbs: "--",
+
                       CURRENT_DATE: new Date(varrr.date).toLocaleDateString(),
                       CURRENT_TIME: varrr.time,
                       CURRENT_BG: "--",
@@ -367,7 +415,9 @@ export const MonthRecord = (props) => {
                       adin: "--",
                       threeamin: "--",
                     };
-                    console.log("this is the insuldfdf dfldf dfkd fkdjf predicitton");
+                    console.log(
+                      "this is the insuldfdf dfldf dfkd fkdjf predicitton"
+                    );
 
                     console.log(tryth);
 
@@ -397,8 +447,13 @@ export const MonthRecord = (props) => {
                             " Accepted ",
                       adin: "--",
                       threeamin: "--",
+                      bcarbs: "--",
+                      dcarbs: "--",
+                      lcarbs: "--",
                     };
-                    console.log("this is the insuldfdf dfldf dfkd fkdjf predicitton");
+                    console.log(
+                      "this is the insuldfdf dfldf dfkd fkdjf predicitton"
+                    );
 
                     console.log(tryth);
 
@@ -422,8 +477,13 @@ export const MonthRecord = (props) => {
                       bdin: "--",
                       adin: varrr.amount,
                       threeamin: "--",
+                      bcarbs: "--",
+                      dcarbs: "--",
+                      lcarbs: "--",
                     };
-                    console.log("this is the insuldfdf dfldf dfkd fkdjf predicitton");
+                    console.log(
+                      "this is the insuldfdf dfldf dfkd fkdjf predicitton"
+                    );
 
                     console.log(tryth);
 
@@ -437,10 +497,12 @@ export const MonthRecord = (props) => {
                   // {console.log(obj)}
                   if (categoryToCheckForAccepted == "Pre-lunch") {
                     console.log(tryth);
-                    console.log("this is the insuldfdf dfldf dfkd fkdjf predicitton");
+                    console.log(
+                      "this is the insuldfdf dfldf dfkd fkdjf predicitton"
+                    );
 
-                    uniqueNames.pop(tryth);
-                    tryth.blin =
+                    // uniqueNames.pop(tryth);
+                    obj.blin =
                       acceptedAmount == -1
                         ? varrr.amount
                         : varrr.amount +
@@ -448,13 +510,15 @@ export const MonthRecord = (props) => {
                           acceptedAmount +
                           " Accepted ";
 
-                    uniqueNames.push(tryth);
+                    // uniqueNames.push(tryth);
                   } else if (categoryToCheckForAccepted == "Pre-breakfast") {
                     console.log(tryth);
-                    console.log("this is the insuldfdf dfldf dfkd fkdjf predicitton");
+                    console.log(
+                      "this is the insuldfdf dfldf dfkd fkdjf predicitton"
+                    );
 
-                    uniqueNames.pop(tryth);
-                    tryth.Fastingin =
+                    // uniqueNames.pop(tryth);
+                    obj.Fastingin =
                       acceptedAmount == -1
                         ? varrr.amount
                         : varrr.amount +
@@ -462,14 +526,16 @@ export const MonthRecord = (props) => {
                           acceptedAmount +
                           " Accepted ";
 
-                    uniqueNames.push(tryth);
+                    // uniqueNames.push(tryth);
                   } else if (categoryToCheckForAccepted == "Pre-dinner") {
-                          console.log(tryth);
-                          console.log(tryth);
-                          console.log("this is the insuldfdf dfldf dfkd fkdjf predicitton");
+                    console.log(tryth);
+                    console.log(tryth);
+                    console.log(
+                      "this is the insuldfdf dfldf dfkd fkdjf predicitton"
+                    );
 
-                    uniqueNames.pop(tryth);
-                    tryth.bdin =
+                    // uniqueNames.pop(tryth);
+                    obj.bdin =
                       acceptedAmount == -1
                         ? varrr.amount
                         : varrr.amount +
@@ -477,23 +543,20 @@ export const MonthRecord = (props) => {
                           acceptedAmount +
                           " Accepted ";
 
-                    uniqueNames.push(tryth);
+                    // uniqueNames.push(tryth);
                   } else if (varrr.category == "Bed-time") {
-                    tryth.adin = varrr.amount;
-                    uniqueNames.pop(tryth);
-                    uniqueNames.push(tryth);
+                    // uniqueNames.pop(tryth);
+                    obj.adin = varrr.amount;
+                    // uniqueNames.push(tryth);
                   }
                 }
               })}
-              {
-
-              exambg.map((varrr) => {
+              {exambg.map((varrr) => {
                 console.log("exambg executed");
 
                 let obj = uniqueNames.find(
-
                   (o) =>
-                    o.CURRENT_DATE === new Date(varrr.date).toLocaleDateString()
+                    o.CURRENT_DATE == new Date(varrr.date).toLocaleDateString()
                 );
                 // console.log(obj)
 
@@ -517,6 +580,9 @@ export const MonthRecord = (props) => {
                       bdin: "--",
                       adin: "--",
                       threeamin: "--",
+                      bcarbs: "--",
+                      dcarbs: "--",
+                      lcarbs: "--",
                     };
 
                     uniqueNames.push(tryth);
@@ -539,6 +605,9 @@ export const MonthRecord = (props) => {
                       bdin: "--",
                       adin: "--",
                       threeamin: "--",
+                      bcarbs: "--",
+                      dcarbs: "--",
+                      lcarbs: "--",
                     };
 
                     uniqueNames.push(tryth);
@@ -561,6 +630,9 @@ export const MonthRecord = (props) => {
                       bdin: "--",
                       adin: "--",
                       threeamin: "--",
+                      bcarbs: "--",
+                      dcarbs: "--",
+                      lcarbs: "--",
                     };
 
                     uniqueNames.push(tryth);
@@ -583,6 +655,9 @@ export const MonthRecord = (props) => {
                       bdin: "--",
                       adin: "--",
                       threeamin: "--",
+                      bcarbs: "--",
+                      dcarbs: "--",
+                      lcarbs: "--",
                     };
 
                     uniqueNames.push(tryth);
@@ -596,7 +671,7 @@ export const MonthRecord = (props) => {
                       ad: "--",
                       threeam: "--",
                       CURRENT_DATE: new Date(varrr.date).toLocaleDateString(),
-                      CURRENT_TIME: new Date(varrr.date).toLocaleDateString(),
+                      CURRENT_TIME: varrr.time,
                       CURRENT_BG: "--",
                       Fastingin: "--",
                       abfin: "--",
@@ -605,6 +680,9 @@ export const MonthRecord = (props) => {
                       bdin: "--",
                       adin: "--",
                       threeamin: "--",
+                      bcarbs: "--",
+                      dcarbs: "--",
+                      lcarbs: "--",
                     };
 
                     uniqueNames.push(tryth);
@@ -627,6 +705,9 @@ export const MonthRecord = (props) => {
                       bdin: "--",
                       adin: "--",
                       threeamin: "--",
+                      bcarbs: "--",
+                      dcarbs: "--",
+                      lcarbs: "--",
                     };
 
                     uniqueNames.push(tryth);
@@ -649,6 +730,9 @@ export const MonthRecord = (props) => {
                       bdin: "--",
                       adin: "--",
                       threeamin: "--",
+                      bcarbs: "--",
+                      dcarbs: "--",
+                      lcarbs: "--",
                     };
 
                     uniqueNames.push(tryth);
@@ -660,43 +744,41 @@ export const MonthRecord = (props) => {
                   let tryth = obj;
                   // {console.log(obj)}
                   if (varrr.category == "Pre-lunch") {
-                    tryth.blin = varrr.amount;
-                    uniqueNames.pop(tryth);
-                    uniqueNames.push(tryth);
+                    // uniqueNames.pop(tryth);
+                    obj.blin = varrr.amount;
+                    // uniqueNames.push(tryth);
                   } else if (varrr.category == "Pre-breakfast") {
-                    tryth.Fastingin = varrr.amount;
-                    uniqueNames.pop(tryth);
-                    uniqueNames.push(tryth);
+                    // uniqueNames.pop(tryth);
+                    obj.Fastingin = varrr.amount;
+                    // uniqueNames.push(tryth);
                   } else if (varrr.category == "Pre-dinner") {
-                    tryth.bdin = varrr.amount;
-                    uniqueNames.pop(tryth);
-                    uniqueNames.push(tryth);
+                    // uniqueNames.pop(tryth);
+                    obj.bdin = varrr.amount;
+                    // uniqueNames.push(tryth);
                   } else if (varrr.category == "Bed-time") {
-                    tryth.adin = varrr.amount;
-                    uniqueNames.pop(tryth);
-                    uniqueNames.push(tryth);
+                    // uniqueNames.pop(tryth);
+                    obj.adin = varrr.amount;
+                    // uniqueNames.push(tryth);
                   }
                 }
               })}
               {
-              // className="basic-details-calendar-div-outer"
-                <div >
+                // className="basic-details-calendar-div-outer"
+                <div>
                   <div className="basic-details-div">
                     <ul
                       style={{
                         listStyleType: "none",
                         margin: "0",
-                        width:"100%",
-                        height:"100%",
+                        width: "100%",
+                        height: "100%",
                         padding: "0",
                       }}
                     >
                       <li>
                         <div>
                           <div className="request-card-item-header">
-                            <div className="name-email-div">
-                              Date
-                            </div>
+                            <div className="name-email-div">Date</div>
                             <div className="status-div">Description</div>
                             <div className="accept-button-div">Fasting</div>
                             <div className="sex-div">ABF</div>
@@ -718,9 +800,7 @@ export const MonthRecord = (props) => {
                             <div className="name-email-div">
                               {item.CURRENT_DATE}
                             </div>
-                            <div className="status-div">
-                              BG
-                            </div>
+                            <div className="status-div">BG</div>
 
                             {/* <div className="name-email-div"> */}
                             <div className="status-div one-line-text2">
@@ -759,9 +839,7 @@ export const MonthRecord = (props) => {
                             <div className="name-email-div">
                               {item.CURRENT_DATE}
                             </div>
-                            <div className="status-div">
-                              Insulin
-                            </div>
+                            <div className="status-div">Insulin</div>
 
                             {/* <div className="name-email-div"> */}
                             <div className="status-div one-line-text2">
@@ -787,6 +865,43 @@ export const MonthRecord = (props) => {
                             {/* </div> */}
                             <div className="status-div">
                               <div>{item.threeamin}</div>
+                            </div>
+
+                            {/* Overlay with Framer Motion */}
+                          </div>
+                          <div
+                            className="request-card-item all-scrollbar-style-none"
+                            title={`${item.Fasting}`}
+                          >
+                            {/* Main content */}
+                            <div className="name-email-div">
+                              {item.CURRENT_DATE}
+                            </div>
+                            <div className="status-div">Carbs</div>
+
+                            {/* <div className="name-email-div"> */}
+                            <div className="status-div one-line-text2">
+                              {item.bcarbs}
+                            </div>
+
+                            <div className="status-div one-line-text2">--</div>
+                            <div className="status-div one-line-text2">
+                              {item.lcarbs}
+                            </div>
+                            {/* </div> */}
+                            <div className="status-div">
+                              <div>--</div>
+                            </div>
+                            <div className="status-div">
+                              <div>{item.dcarbs}</div>
+                            </div>
+                            <div className="status-div">
+                              <div>--</div>
+                            </div>
+
+                            {/* </div> */}
+                            <div className="status-div">
+                              <div>--</div>
                             </div>
 
                             {/* Overlay with Framer Motion */}
