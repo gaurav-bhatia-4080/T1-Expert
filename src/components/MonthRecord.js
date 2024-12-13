@@ -196,9 +196,18 @@ export const MonthRecord = (props) => {
                 const food_name = varrr.food_name
                   .split("[")
                   .map((x) => x.trim())[0];
+                console.log(
+                  "1111111111111111111111111111111111111111111111111111111111"
+                );
+                console.log(varrr.food_name);
+                console.log(food_name);
                 const name = examfood.find((x) => x.name == food_name);
-                const quantity = varrr.food_quantity;
-                const carbs = name.carbs * quantity;
+                console.log(name);
+                let carbs = 0;
+                if (name) {
+                  const quantity = varrr.food_quantity;
+                  carbs = name.carbs * quantity;
+                }
                 let obj = uniqueNames.find(
                   (o) =>
                     o.CURRENT_DATE == new Date(varrr.date).toLocaleDateString()
@@ -336,14 +345,30 @@ export const MonthRecord = (props) => {
                 console.log(new Date(varrr.date).toLocaleDateString());
 
                 let acceptedAmount = -1;
-                let categoryToCheck = examDic[varrr.date][varrr.time];
-                let categoryToCheckForAccepted =
-                  "Pre-" + categoryToCheck.toLowerCase();
+                let categoryToCheck = undefined;
+                console.log(
+                  "222222222222222222222222222222222222222222222222222"
+                );
+                console.log(varrr.date);
+                console.log(varrr.time);
+                console.log(examDic[varrr.date]);
+
+                if (examDic[varrr.date]) {
+                  categoryToCheck = examDic[varrr.date][varrr.time];
+                }
+
+                let categoryToCheckForAccepted = "NA";
+                if (categoryToCheck) {
+                  categoryToCheckForAccepted =
+                    "Pre-" + categoryToCheck.toLowerCase();
+                }
 
                 if (
                   varrr.status == "Rejected" &&
+                  categoryToCheckForAccepted != "NA" &&
                   varrr.time != "Time" &&
-                  varrr.date in examinsulinDic
+                  varrr.date in examinsulinDic &&
+                  categoryToCheckForAccepted in examinsulinDic[varrr.date]
                 ) {
                   acceptedAmount =
                     examinsulinDic[varrr.date][categoryToCheckForAccepted];
