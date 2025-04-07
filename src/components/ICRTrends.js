@@ -39,11 +39,11 @@ const ICRTrends = () => {
   // Prepare data for the chart
 
   const data = {
-    labels: bicr.map((x, index) =>
-      {console.log(x);
-        console.log(new Date(x.updation_time));
+    labels: bicr.map((x, index) => {
+      console.log(x);
+      console.log(new Date(x.updation_time));
       return new Date(parseInt(x.updation_time)).toLocaleDateString();
-  }), // Assuming all lists have the same length
+    }), // Assuming all lists have the same length
     datasets: [
       {
         label: "BICR",
@@ -81,7 +81,7 @@ const ICRTrends = () => {
       },
       title: {
         display: true,
-        text: "ICR Line Graph with Shading",
+        text: "ICR weekly trends",
       },
     },
     scales: {

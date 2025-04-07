@@ -116,6 +116,15 @@ export const PatientDetailsNew = (props) => {
         // console.log(typeof res.data);
       });
   };
+
+  const formatDate = (createdAt) => {
+    if (!createdAt) return "Not Available"; // Handle missing field
+
+    const date = new Date(createdAt);
+    const options = { day: '2-digit', month: 'long', year: 'numeric' };
+
+    return date.toLocaleDateString('en-GB', options);
+  };
   const encryptEmailToUrl = (email) => {
     // Encode email address to Base64
     const encodedEmail = btoa(email);
@@ -225,10 +234,10 @@ export const PatientDetailsNew = (props) => {
                 <NavLink
                   to=""
                   end
-                  style={({ isActive }) => ({
-                    color: isActive ? "black" : "", // Black color only when active, otherwise inherit the default color
-                    borderBottom: isActive ? "2px solid black" : "none", // Border only when active
-                  })}
+                  // style={({ isActive }) => ({
+                  //   color: isActive ? "black" : "", // Black color only when active, otherwise inherit the default color
+                  //   borderBottom: isActive ? "2px solid black" : "none", // Border only when active
+                  // })}
                   className="nav-item-navlink"
                 >
                   {" "}
@@ -237,11 +246,11 @@ export const PatientDetailsNew = (props) => {
               </div>
               <div className="nav-item-div">
                 <NavLink
-                  to="/records"
-                  style={({ isActive }) => ({
-                    color: isActive ? "black" : "",
-                    borderBottom: isActive ? "2px solid black" : "none",
-                  })}
+                  // to="/records"
+                  // style={({ isActive }) => ({
+                  //   color: isActive ? "black" : "",
+                  //   borderBottom: isActive ? "2px solid black" : "none",
+                  // })}
                   className="nav-item-navlink"
                 >
                   Records
@@ -249,7 +258,7 @@ export const PatientDetailsNew = (props) => {
 
                 {/* Dropdown list for Records */}
                 <div className="dropdown-list">
-                  <NavLink to="/records/insulin">
+                  {/* <NavLink to="/records/insulin">
                     {" "}
                     <FaSyringe size={20} color="white" />
                     <div className="text-list">Insulin Dose</div>
@@ -258,23 +267,23 @@ export const PatientDetailsNew = (props) => {
                     {" "}
                     <FaTint size={20} color="white" />
                     <div className="text-list">Blood Glucose</div>
-                    </NavLink>
-                    <NavLink to="formatted-data">
+                  </NavLink> */}
+                  <NavLink to="formatted-data">
                     {" "}
-                    <FaRegFileAlt  size={20} color="white" />
+                    <FaRegFileAlt size={20} color="white" />
                     <div className="text-list">Formatted Data</div>
                   </NavLink>
 
-                 </div>
+                </div>
               </div>
 
               <div className="nav-item-div">
                 <NavLink
-                  to="/trends"
-                  style={({ isActive }) => ({
-                    color: isActive ? "black" : "",
-                    borderBottom: isActive ? "2px solid black" : "none",
-                  })}
+                  // to="/trends"
+                  // style={({ isActive }) => ({
+                  //   color: isActive ? "black" : "",
+                  //   borderBottom: isActive ? "2px solid black" : "none",
+                  // })}
                   className="nav-item-navlink"
                 >
                   Trends
@@ -314,17 +323,47 @@ export const PatientDetailsNew = (props) => {
               </div> */}
             </nav>
             <div className="patient-details-header">
-              <div>
-                <img src={userPhoto} height={50} width={50} />
-              </div>
-              <div className="name-registered-detail-div">
-                <div className="name-user-details">{currPatient.name}</div>
-                <div className="registered-div-icon">
-                  <div className="padding-margin-zero">
-                    <FaAnchor size={14} className="padding-margin-zero" />
+              <div className="patient-details-header-div-name-img">
+                <div>
+                  <img src={userPhoto} height={50} width={50} />
+                </div>
+                <div className="name-registered-detail-div">
+                  <div className="name-user-details">{currPatient.name}</div>
+                  <div className="registered-div-icon">
+                    <div className="padding-margin-zero">
+                      <FaAnchor size={14} className="padding-margin-zero" />
+                    </div>
+                    <div style={{ marginLeft: "5px" }}>
+                      Registered on: {formatDate(currPatient.createdAt)}
+                    </div>
                   </div>
-                  <div style={{ marginLeft: "5px" }}>
-                    Registered on: 12 March 2024
+                </div>
+              </div>
+              <div className="view-patient-details-button">
+                <div className="hover-details-container">
+                  <button className="details-button">
+                    <span className="button-text">View patient details</span>
+                    <span className="dropdown-icon">
+                      <svg
+                        width="10"
+                        height="10"
+                        viewBox="0 0 10 10"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <polyline
+                          points="1,3 5,7 9,3"
+                          fill="none"
+                          stroke="white"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                  <div className="hover-popup">
+                    <PatientDetailsSection currPatient={currPatient} setPatient={setCurrPatient} details={details} setDetails={setdetails} />
                   </div>
                 </div>
               </div>
@@ -336,5 +375,4 @@ export const PatientDetailsNew = (props) => {
     </div>
   );
 };
-
 export default PatientDetailsNew;

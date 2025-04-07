@@ -100,12 +100,12 @@ function App() {
       children: [
         {
           index: true,
-          element: <PatientDetailsSection />,
+          element: <MonthRecord />,
         },
-        {
-          path: "trends",
-          element: <BloodGlucoseTrends />,
-        },
+        // {
+        //   path: "trends",
+        //   element: <BloodGlucoseTrends />,
+        // },
         {
           path: "formatted-data",
           element: (

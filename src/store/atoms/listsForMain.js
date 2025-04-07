@@ -29,8 +29,7 @@ export const pendingPatients = atom({
       try {
         // API request to get pending patients
         const response = await axios.get(
-          `${
-            process.env.REACT_APP_API_URL
+          `${process.env.REACT_APP_API_URL
           }/getPendingPatients/${encryptEmailToUrl(email)}`,
           { withCredentials: true }
         );
@@ -126,8 +125,7 @@ export const pendingExercise = atom({
       try {
         // API request to get pending patients
         const response = await axios.get(
-          `${
-            process.env.REACT_APP_API_URL
+          `${process.env.REACT_APP_API_URL
           }/getPendingExercises/${encryptEmailToUrl(user.emails[0].value)}`,
           { withCredentials: true }
         );
@@ -264,15 +262,14 @@ export const getfooddb = atom({
 //   },
 // });
 
-export const mypatientsAtom = atom({
+
+export const mypatients = atom({
   key: "mypatientsAtom",
   default: selector({
     key: "mypatientsget",
     get: async ({ get }) => {
-      // Retrieve the currentUser value
       const user = get(currentUser);
 
-      // Check if currentUser exists and has a valid email
       if (!user || !user.emails || !user.emails[0] || !user.emails[0].value) {
         throw new Error(
           "User email is not available or user is not logged in."
@@ -282,51 +279,88 @@ export const mypatientsAtom = atom({
       const email = user.emails[0].value;
 
       try {
-        // API request to get pending patients
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/getPatients/${encryptEmailToUrl(
-            user.emails[0].value
-          )}`,
+          `${process.env.REACT_APP_API_URL}/getPatients/${encryptEmailToUrl(email)}`,
           { withCredentials: true }
         );
-        return response.data; // Return the fetched data
+        return response.data;
       } catch (error) {
         console.error("Error fetching", error);
-        throw error; // Handle API errors gracefully
+        throw error;
       }
     },
   }),
 });
 
-export const mypatients = selector({
-  key: "mypatients",
-  get: async ({ get }) => {
-    // Retrieve the currentUser value
-    const user = get(currentUser);
-    const myp = get(mypatientsAtom);
-    const pending = get(pendingPatients);
-    // Check if currentUser exists and has a valid email
-    if (!user || !user.emails || !user.emails[0] || !user.emails[0].value) {
-      throw new Error("User email is not available or user is not logged in.");
-    }
 
-    const email = user.emails[0].value;
+//// USE THESE ATOMS FOR PENDING PATIENTS///
 
-    try {
-      // API request to get pending patients
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/getPatients/${encryptEmailToUrl(
-          user.emails[0].value
-        )}`,
-        { withCredentials: true }
-      );
-      return response.data; // Return the fetched data
-    } catch (error) {
-      console.error("Error fetching", error);
-      throw error; // Handle API errors gracefully
-    }
-  },
-});
+
+// export const mypatientsAtom = atom({
+//   key: "mypatientsAtom",
+//   default: selector({
+//     key: "mypatientsget",
+//     get: async ({ get }) => {
+//       // Retrieve the currentUser value
+//       const user = get(currentUser);
+
+//       // Check if currentUser exists and has a valid email
+//       if (!user || !user.emails || !user.emails[0] || !user.emails[0].value) {
+//         throw new Error(
+//           "User email is not available or user is not logged in."
+//         );
+//       }
+
+//       const email = user.emails[0].value;
+
+//       try {
+//         // API request to get pending patients
+//         const response = await axios.get(
+//           `${process.env.REACT_APP_API_URL}/getPatients/${encryptEmailToUrl(
+//             user.emails[0].value
+//           )}`,
+//           { withCredentials: true }
+//         );
+//         return response.data; // Return the fetched data
+//       } catch (error) {
+//         console.error("Error fetching", error);
+//         throw error; // Handle API errors gracefully
+//       }
+//     },
+//   }),
+// });
+
+// export const mypatients = selector({
+//   key: "mypatients",
+//   get: async ({ get }) => {
+//     // Retrieve the currentUser value
+//     const user = get(currentUser);
+//     const myp = get(mypatientsAtom);
+//     const pending = get(pendingPatients);
+//     // Check if currentUser exists and has a valid email
+//     if (!user || !user.emails || !user.emails[0] || !user.emails[0].value) {
+//       throw new Error("User email is not available or user is not logged in.");
+//     }
+
+//     const email = user.emails[0].value;
+
+//     try {
+//       // API request to get pending patients
+//       const response = await axios.get(
+//         `${process.env.REACT_APP_API_URL}/getPatients/${encryptEmailToUrl(
+//           user.emails[0].value
+//         )}`,
+//         { withCredentials: true }
+//       );
+//       return response.data; // Return the fetched data
+//     } catch (error) {
+//       console.error("Error fetching", error);
+//       throw error; // Handle API errors gracefully
+//     }
+//   },
+// });
+
+//// USE THESE ATOMS FOR PENDING PATIENTS///
 
 // export const pendingPatients = atomFamily({
 //   key: "pendingPatients",

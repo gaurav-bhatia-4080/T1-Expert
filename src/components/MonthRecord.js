@@ -13,6 +13,7 @@ import {
   getPredictionExtraDetails,
   getPredictionEntriesWithStatus,
   getFoodEntries,
+  getPredictions,
 } from "../store/atoms/patientDetails.js";
 
 import { getfooddb } from "../store/atoms/listsForMain.js";
@@ -29,8 +30,13 @@ export const MonthRecord = (props) => {
   var uniqueNames = [];
 
   const [exam, setexam] = useRecoilState(
-    getPredictionExtraDetails(decodeURIComponent(id))
+    getPredictions(decodeURIComponent(id))
   );
+
+
+  // const [exam, setexam] = useRecoilState(
+  //   getPredictionExtraDetails(decodeURIComponent(id))
+  // );
   const [exambg, setexambg] = useRecoilState(
     getPatientBG(decodeURIComponent(id))
   );
@@ -190,19 +196,198 @@ export const MonthRecord = (props) => {
             {/* className="pending-patients-requests-list2" */}
             <div>
               {exam.map((varrr) => {
-                console.log("TIS IS THE DATE TO CHECK");
-                console.log(varrr.date);
-                console.log(new Date(varrr.date).toLocaleDateString());
+                const food_list = varrr.meal_food_items_list
+                // .split("[")
+                // .map((x) => x.trim())[0];
+                let carbs = 0
+                for (let i = 0; i < food_list.length; i++) {
+                  carbs += food_list[i].food_item.carbs * food_list[i].food_quantity
+                }
+
+                console.log("FOOD LIST");
+                console.log(carbs);
+                // const name = examfood.find((x) => x.name == food_name);
+                // let carbs = 0;
+                // if (name) {
+                //   const quantity = varrr.food_quantity;
+                //   carbs = name.carbs * quantity;
+                // }
+                let obj = uniqueNames.find(
+                  (o) =>
+                    o.CURRENT_DATE == new Date(varrr.date).toLocaleDateString()
+                );
+                if (obj == null) {
+                  if (varrr.meal_category == "Breakfast") {
+
+                    let tryth = {
+                      Fasting: varrr.blood_glucose,
+                      abf: "--",
+                      bcarbs: carbs.toFixed(2),
+                      lcarbs: "--",
+                      dcarbs: "--",
+                      bl: "--",
+                      al: "--",
+                      bd: "--",
+                      ad: "--",
+                      threeam: "--",
+                      CURRENT_DATE: new Date(varrr.date).toLocaleDateString(),
+                      CURRENT_TIME: varrr.time,
+                      CURRENT_BG: varrr.blood_glucose,
+                      Fastingin:
+                        <span>
+                          {varrr.status === "Accepted" ? (
+                            <>
+
+                              <span style={{ color: "green" }}>{varrr.amount_predicted} Accepted</span>
+                            </>
+                          ) : (
+                            <div style={{ textAlign: "left" }}>
+                              <div>
+                                <span style={{ color: "red" }}>{varrr.amount_predicted} Rejected</span>
+                              </div>
+                              <div>
+                                <span style={{ color: "green" }}> {varrr.amount_taken} Taken</span>
+                              </div>
+                            </div>)}
+                        </span>,
+                      abfin: "--",
+                      blin: "--",
+                      alin: "--",
+                      bdin: "--",
+                      adin: "--",
+                      threeamin: "--",
+                    };
+                    uniqueNames.push(tryth);
+                    console.log(tryth);
+                  } else if (varrr.meal_category == "Lunch") {
+                    let tryth = {
+                      Fasting: "--",
+                      abf: "--",
+                      bl: varrr.blood_glucose,
+                      al: "--",
+                      bd: "--",
+                      ad: "--",
+                      threeam: "--",
+                      CURRENT_DATE: new Date(varrr.date).toLocaleDateString(),
+                      CURRENT_TIME: varrr.time,
+                      CURRENT_BG: varrr.blood_glucose,
+                      Fastingin: "--",
+                      abfin: "--",
+                      blin:
+                        <span>
+                          {varrr.status === "Accepted" ? (
+                            <>
+
+                              <span style={{ color: "green" }}>{varrr.amount_predicted} Accepted</span>
+                            </>
+                          ) : (
+                            <div style={{ textAlign: "left" }}>
+                              <div>
+                                <span style={{ color: "red" }}>{varrr.amount_predicted} Rejected</span>
+                              </div>
+                              <div>
+                                <span style={{ color: "green" }}>{varrr.amount_taken} Taken</span>
+                              </div>
+                            </div>)}
+                        </span>,
+
+                      alin: "--",
+                      bdin: "--",
+                      adin: "--",
+                      threeamin: "--",
+                      bcarbs: "--",
+                      lcarbs: carbs.toFixed(2),
+                      dcarbs: "--",
+                    };
+                    uniqueNames.push(tryth);
+                  } else if (varrr.meal_category == "Dinner") {
+                    let tryth = {
+                      Fasting: "--",
+                      abf: "--",
+                      bl: "--",
+                      al: "--",
+                      bd: varrr.blood_glucose,
+                      ad: "--",
+                      threeam: "--",
+                      CURRENT_DATE: new Date(varrr.date).toLocaleDateString(),
+                      CURRENT_TIME: varrr.time,
+                      CURRENT_BG: varrr.blood_glucose,
+                      Fastingin: "--",
+                      abfin: "--",
+                      blin: "--",
+                      alin: "--",
+                      bdin: <span>
+                        {varrr.status === "Accepted" ? (
+                          <>
+
+                            <span style={{ color: "green" }}>{varrr.amount_predicted} Accepted</span>
+                          </>
+                        ) : (
+                          <div style={{ textAlign: "left" }}>
+                            <div>
+                              <span style={{ color: "red" }}>{varrr.amount_predicted} Rejected</span>
+                            </div>
+                            <div>
+                              <span style={{ color: "green" }}>{varrr.amount_taken} Taken</span>
+                            </div>
+                          </div>)}
+                      </span>,
+
+                      adin: "--",
+                      threeamin: "--",
+                      bcarbs: "--",
+                      lcarbs: "--",
+                      dcarbs: carbs.toFixed(2),
+                    };
+                    uniqueNames.push(tryth);
+                  }
+                  // uniqueNames.push(tryth);
+                  // Listid.push(parseInt(varrr.CURRENT_BG , 10 ) + 1);
+                  // Listin.push(varrr.CURRENT_DATE)
+                } else {
+                  let tryth = obj;
+                  if (varrr.meal_category == "Lunch") {
+                    // uniqueNames.pop(tryth);
+                    if (obj.lcarbs != "--") {
+                      let prevcarbs = parseFloat(obj.lcarbs);
+                      obj.lcarbs = (prevcarbs + carbs).toFixed(2);
+                    } else {
+                      obj.lcarbs = carbs.toFixed(2);
+                    }
+                    obj.bl = varrr.blood_glucose;
+                    // uniqueNames.push(tryth);
+                  } else if (varrr.meal_category == "Breakfast") {
+                    // uniqueNames.pop(tryth);
+                    if (obj.bcarbs != "--") {
+                      let prevcarbs = parseFloat(obj.bcarbs);
+                      obj.bcarbs = (prevcarbs + carbs).toFixed(2);
+                    } else {
+                      obj.bcarbs = carbs.toFixed(2);
+                    }
+
+                    obj.Fasting = varrr.blood_glucose;
+                    // uniqueNames.push(tryth);
+                  } else if (varrr.meal_category == "Dinner") {
+                    // uniqueNames.pop(tryth);
+                    if (obj.dcarbs != "--") {
+                      let prevcarbs = parseFloat(obj.dcarbs);
+                      obj.dcarbs = (prevcarbs + carbs).toFixed(2);
+                    } else {
+                      obj.dcarbs = carbs.toFixed(2);
+                    }
+
+                    obj.bd = varrr.blood_glucose;
+                    // uniqueNames.push(tryth);
+                  }
+                }
+              })}
+
+
+              {/* {exam.map((varrr) => {
                 const food_name = varrr.food_name
                   .split("[")
                   .map((x) => x.trim())[0];
-                console.log(
-                  "1111111111111111111111111111111111111111111111111111111111"
-                );
-                console.log(varrr.food_name);
-                console.log(food_name);
                 const name = examfood.find((x) => x.name == food_name);
-                console.log(name);
                 let carbs = 0;
                 if (name) {
                   const quantity = varrr.food_quantity;
@@ -212,8 +397,6 @@ export const MonthRecord = (props) => {
                   (o) =>
                     o.CURRENT_DATE == new Date(varrr.date).toLocaleDateString()
                 );
-                console.log("date");
-                console.log(new Date(varrr.date).toLocaleDateString());
                 if (obj == null) {
                   if (varrr.food_category == "Breakfast") {
                     console.log("GOT NULL DATE");
@@ -331,8 +514,8 @@ export const MonthRecord = (props) => {
                     // uniqueNames.push(tryth);
                   }
                 }
-              })}
-              {examprediction.map((varrr) => {
+              })} */}
+              {/* {examprediction.map((varrr) => {
                 console.log("examprediction executed");
 
                 let obj = uniqueNames.find((o) => {
@@ -391,9 +574,9 @@ export const MonthRecord = (props) => {
                         acceptedAmount == -1
                           ? varrr.amount
                           : varrr.amount +
-                            " Rejected " +
-                            acceptedAmount +
-                            " Accepted ",
+                          " Rejected " +
+                          acceptedAmount +
+                          " Accepted ",
                       abfin: "--",
                       blin: "--",
                       alin: "--",
@@ -432,9 +615,9 @@ export const MonthRecord = (props) => {
                         acceptedAmount == -1
                           ? varrr.amount
                           : varrr.amount +
-                            " Rejected " +
-                            acceptedAmount +
-                            " Accepted ",
+                          " Rejected " +
+                          acceptedAmount +
+                          " Accepted ",
                       alin: "--",
                       bdin: "--",
                       adin: "--",
@@ -467,9 +650,9 @@ export const MonthRecord = (props) => {
                         acceptedAmount == -1
                           ? varrr.amount
                           : varrr.amount +
-                            " Rejected " +
-                            acceptedAmount +
-                            " Accepted ",
+                          " Rejected " +
+                          acceptedAmount +
+                          " Accepted ",
                       adin: "--",
                       threeamin: "--",
                       bcarbs: "--",
@@ -531,9 +714,9 @@ export const MonthRecord = (props) => {
                       acceptedAmount == -1
                         ? varrr.amount
                         : varrr.amount +
-                          " Rejected " +
-                          acceptedAmount +
-                          " Accepted ";
+                        " Rejected " +
+                        acceptedAmount +
+                        " Accepted ";
 
                     // uniqueNames.push(tryth);
                   } else if (categoryToCheckForAccepted == "Pre-breakfast") {
@@ -547,9 +730,9 @@ export const MonthRecord = (props) => {
                       acceptedAmount == -1
                         ? varrr.amount
                         : varrr.amount +
-                          " Rejected " +
-                          acceptedAmount +
-                          " Accepted ";
+                        " Rejected " +
+                        acceptedAmount +
+                        " Accepted ";
 
                     // uniqueNames.push(tryth);
                   } else if (categoryToCheckForAccepted == "Pre-dinner") {
@@ -564,9 +747,9 @@ export const MonthRecord = (props) => {
                       acceptedAmount == -1
                         ? varrr.amount
                         : varrr.amount +
-                          " Rejected " +
-                          acceptedAmount +
-                          " Accepted ";
+                        " Rejected " +
+                        acceptedAmount +
+                        " Accepted ";
 
                     // uniqueNames.push(tryth);
                   } else if (varrr.category == "Bed-time") {
@@ -575,7 +758,7 @@ export const MonthRecord = (props) => {
                     // uniqueNames.push(tryth);
                   }
                 }
-              })}
+              })} */}
               {exambg.map((varrr) => {
                 console.log("exambg executed");
 

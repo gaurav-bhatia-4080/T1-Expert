@@ -9,16 +9,15 @@ const encryptEmailToUrl = (email) => {
 };
 
 export const getCurrPatientBasicInfo = atomFamily({
-    key: "getCurrPatientBasicInfo",
-    default: selectorFamily({
-      key: "getCurrPatientBasicInfoSelector",
-      get:
-        (id) =>
+  key: "getCurrPatientBasicInfo",
+  default: selectorFamily({
+    key: "getCurrPatientBasicInfoSelector",
+    get:
+      (id) =>
         async ({ get }) => {
           try {
             const response = await axios.get(
-              `${
-                process.env.REACT_APP_API_URL
+              `${process.env.REACT_APP_API_URL
               }/getCurrPatientBasicInfo/${encryptEmailToUrl(id)}`,
               {
                 withCredentials: true,
@@ -30,21 +29,20 @@ export const getCurrPatientBasicInfo = atomFamily({
             throw error; // Handle API errors gracefully
           }
         },
-    }),
-  });
+  }),
+});
 
 
-  export const getPatientInsulin = atomFamily({
-    key: "getPatientInsulin",
-    default: selectorFamily({
-      key: "getPatientInsulinSelector",
-      get:
-        (id) =>
+export const getPatientInsulin = atomFamily({
+  key: "getPatientInsulin",
+  default: selectorFamily({
+    key: "getPatientInsulinSelector",
+    get:
+      (id) =>
         async ({ get }) => {
           try {
             const response = await axios.get(
-              `${
-                process.env.REACT_APP_API_URL
+              `${process.env.REACT_APP_API_URL
               }/getPatientInsulin/${encryptEmailToUrl(id)}`,
               {
                 withCredentials: true,
@@ -56,19 +54,18 @@ export const getCurrPatientBasicInfo = atomFamily({
             throw error; // Handle API errors gracefully
           }
         },
-    }),
-  });
-  export const getPatientBG = atomFamily({
-    key: "getPatientBG",
-    default: selectorFamily({
-      key: "getPatientBGSelector",
-      get:
-        (id) =>
+  }),
+});
+export const getPatientBG = atomFamily({
+  key: "getPatientBG",
+  default: selectorFamily({
+    key: "getPatientBGSelector",
+    get:
+      (id) =>
         async ({ get }) => {
           try {
             const response = await axios.get(
-              `${
-                process.env.REACT_APP_API_URL
+              `${process.env.REACT_APP_API_URL
               }/getPatientBG/${encryptEmailToUrl(id)}`,
               {
                 withCredentials: true,
@@ -80,8 +77,8 @@ export const getCurrPatientBasicInfo = atomFamily({
             throw error; // Handle API errors gracefully
           }
         },
-    }),
-  });
+  }),
+});
 
 
 export const getFoodEntries = atomFamily({
@@ -90,50 +87,75 @@ export const getFoodEntries = atomFamily({
     key: "getFoodEntriesSelector",
     get:
       (id) =>
-      async ({ get }) => {
-        try {
-          const response = await axios.get(
-            `${
-              process.env.REACT_APP_API_URL
-            }/getPatientFoodEntries/${encryptEmailToUrl(id)}`,
-            {
-              withCredentials: true,
-            }
-          );
-          console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  ", id);
-          return response.data;
-        } catch (error) {
-          console.error("Error fetching pending patients:", error);
-          throw error; // Handle API errors gracefully
-        }
-      },
+        async ({ get }) => {
+          try {
+            const response = await axios.get(
+              `${process.env.REACT_APP_API_URL
+              }/getPatientFoodEntries/${encryptEmailToUrl(id)}`,
+              {
+                withCredentials: true,
+              }
+            );
+            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  ", id);
+            return response.data;
+          } catch (error) {
+            console.error("Error fetching pending patients:", error);
+            throw error; // Handle API errors gracefully
+          }
+        },
   }),
 });
 
-    
+
+export const getPredictions = atomFamily({
+  key: "getPredictions",
+  default: selectorFamily({
+    key: "getPredictionsSelector",
+    get:
+      (id) =>
+        async ({ get }) => {
+          try {
+            const response = await axios.get(
+              `${process.env.REACT_APP_API_URL
+              }/getPatientPredictions/${encryptEmailToUrl(id)}`,
+              {
+                withCredentials: true,
+              }
+            );
+            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  ", id);
+            return response.data;
+          } catch (error) {
+            console.error("Error fetching pending patients:", error);
+            throw error; // Handle API errors gracefully
+          }
+        },
+  }),
+});
+
+
+
 export const getPredictionExtraDetails = atomFamily({
   key: "getPredictionExtraDetails",
   default: selectorFamily({
     key: "getPredictionExtraDetailsSelector",
     get:
       (id) =>
-      async ({ get }) => {
-        try {
-          const response = await axios.get(
-            `${
-              process.env.REACT_APP_API_URL
-            }/getPatientPredExtraDetails/${encryptEmailToUrl(id)}`,
-            {
-              withCredentials: true,
-            }
-          );
-          console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  ", id);
-          return response.data;
-        } catch (error) {
-          console.error("Error fetching pending patients:", error);
-          throw error; // Handle API errors gracefully
-        }
-      },
+        async ({ get }) => {
+          try {
+            const response = await axios.get(
+              `${process.env.REACT_APP_API_URL
+              }/getPatientPredExtraDetails/${encryptEmailToUrl(id)}`,
+              {
+                withCredentials: true,
+              }
+            );
+            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  ", id);
+            return response.data;
+          } catch (error) {
+            console.error("Error fetching pending patients:", error);
+            throw error; // Handle API errors gracefully
+          }
+        },
   }),
 });
 
@@ -143,22 +165,21 @@ export const getPredictionTrainedParams = atomFamily({
     key: "getPredictionTrainedParamsSelector",
     get:
       (id) =>
-      async ({ get }) => {
-        try {
-          const response = await axios.get(
-            `${
-              process.env.REACT_APP_API_URL
-            }/getPredictionTrainedParams/${encryptEmailToUrl(id)}`,
-            {
-              withCredentials: true,
-            }
-          );
-          return response.data;
-        } catch (error) {
-          console.error("Error fetching pending patients:", error);
-          throw error; // Handle API errors gracefully
-        }
-      },
+        async ({ get }) => {
+          try {
+            const response = await axios.get(
+              `${process.env.REACT_APP_API_URL
+              }/getPredictionTrainedParams/${encryptEmailToUrl(id)}`,
+              {
+                withCredentials: true,
+              }
+            );
+            return response.data;
+          } catch (error) {
+            console.error("Error fetching pending patients:", error);
+            throw error; // Handle API errors gracefully
+          }
+        },
   }),
 });
 
@@ -168,22 +189,21 @@ export const getPredictionEntriesWithStatus = atomFamily({
     key: "getPredictionEntriesWithStatusSelector",
     get:
       (id) =>
-      async ({ get }) => {
-        try {
-          const response = await axios.get(
-            `${
-              process.env.REACT_APP_API_URL
-            }/getPredictionWithStatus/${encryptEmailToUrl(id)}`,
-            {
-              withCredentials: true,
-            }
-          );
-          return response.data;
-        } catch (error) {
-          console.error("Error fetching pending patients:", error);
-          throw error; // Handle API errors gracefully
-        }
-      },
+        async ({ get }) => {
+          try {
+            const response = await axios.get(
+              `${process.env.REACT_APP_API_URL
+              }/getPredictionWithStatus/${encryptEmailToUrl(id)}`,
+              {
+                withCredentials: true,
+              }
+            );
+            return response.data;
+          } catch (error) {
+            console.error("Error fetching pending patients:", error);
+            throw error; // Handle API errors gracefully
+          }
+        },
   }),
 });
 export const getPatientsICRLists = atomFamily({
@@ -192,22 +212,21 @@ export const getPatientsICRLists = atomFamily({
     key: "getPatientsICRListsSelector",
     get:
       (id) =>
-      async ({ get }) => {
-        try {
-          const response = await axios.get(
-            `${
-              process.env.REACT_APP_API_URL
-            }/getPatientsICRLists/${encryptEmailToUrl(id)}`,
-            {
-              withCredentials: true,
-            }
-          );
-          console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  ", id);
-          return response.data;
-        } catch (error) {
-          console.error("Error fetching pending patients:", error);
-          throw error; // Handle API errors gracefully
-        }
-      },
+        async ({ get }) => {
+          try {
+            const response = await axios.get(
+              `${process.env.REACT_APP_API_URL
+              }/getPatientsICRLists/${encryptEmailToUrl(id)}`,
+              {
+                withCredentials: true,
+              }
+            );
+            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  ", id);
+            return response.data;
+          } catch (error) {
+            console.error("Error fetching pending patients:", error);
+            throw error; // Handle API errors gracefully
+          }
+        },
   }),
 });

@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
+
+
 const NavPatientItem = ({
   item,
   index,
@@ -30,6 +32,16 @@ const NavPatientItem = ({
     backgroundColor: isSelected ? "#141414" : "#414141",
   });
 
+  
+  const formatDate = (createdAt) => {
+    if (!createdAt) return "Not Available"; // Handle missing field
+
+    const date = new Date(createdAt);
+    const options = { day: '2-digit', month: 'long', year: 'numeric' };
+    
+    return date.toLocaleDateString('en-GB', options);
+};
+
   const handlePatientItemClick = () => {
     navigate(`/patient-details/${encodeURIComponent(item.email)}`);
     // setChangePatient((prev)=> !prev);
@@ -48,7 +60,7 @@ const NavPatientItem = ({
     >
       <div className="name-register-div">
         <div className="name">{item.name}</div>
-        <div className="register">Registered: 12 March 2024</div>
+        <div className="register">Registered: {formatDate(item.createdAt)} </div>
       </div>
       <div className="arrow-icon-div">
         <FaArrowRight color={isSelected ? "white" : "darkgray"} size={15} />

@@ -1,7 +1,7 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
 import { useRecoilState } from "recoil";
-import { getPredictionExtraDetails } from "../store/atoms/patientDetails.js";
+import { getPredictionExtraDetails, getPredictions } from "../store/atoms/patientDetails.js";
 import { useParams } from "react-router-dom";
 import {
   Chart as ChartJS,
@@ -30,30 +30,30 @@ ChartJS.register(
 const BloodGlucoseTrends = () => {
   const { id } = useParams();
   const [exam] = useRecoilState(
-    getPredictionExtraDetails(decodeURIComponent(id))
+    getPredictions(decodeURIComponent(id))
   );
 
   // Helper function to process data
   const processData = (data) => {
     // Group by date
     const groupedByDate = data.reduce((acc, entry) => {
-      const { date, time, food_category, current_bg } = entry;
+      const { date, time, meal_category: food_category, blood_glucose: current_bg } = entry;
 
       // Initialize an array for each date if not present
       if (!acc[date]) acc[date] = [];
 
       // If time is available, use it, otherwise map food_category to a time order
-      const timeToUse =
-        time === "Time"
-          ? {
-              Breakfast: "08:00",
-              Lunch: "12:00",
-              Snack: "16:00",
-              Dinner: "19:00",
-            }[food_category]
-          : time;
+      // const timeToUse =
+      //   time === "Time"
+      //     ? {
+      //       Breakfast: "08:00",
+      //       Lunch: "12:00",
+      //       Snack: "16:00",
+      //       Dinner: "19:00",
+      //     }[food_category]
+      //     : time;
 
-      acc[date].push({ time: timeToUse, current_bg, food_category });
+      acc[date].push({ time, current_bg, food_category });
       return acc;
     }, {});
 
