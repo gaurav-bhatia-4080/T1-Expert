@@ -189,8 +189,8 @@ export default function MainMyPatients() {
   // Filter the patient list based on the search query
   const filteredList = details
     ? details.filter((item) =>
-        item.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
     : [];
 
   // Row renderer for FixedSizeList
@@ -313,8 +313,8 @@ export default function MainMyPatients() {
         {details == null ? (
           <DoubleLoader />
         ) : filteredList.length === 0 ? (
-          <div className="all-website-font">
-            <img src={noReq} width={35} height={35} />
+          <div className="all-website-font no-req">
+            <img src={noReq} width={300} height={300} />
           </div>
         ) : (
           <div

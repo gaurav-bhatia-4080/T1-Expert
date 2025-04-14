@@ -98,7 +98,7 @@ export default function PatientDetailsSection({ currPatient, setPatient, details
   return (
     // <div className="basic-details-calendar-div-outer">
 
-    <div className="basic-details-div">
+    <div className="basic-details-div-dropdown-outer">
       <div className="basic-info">Basic Information</div>
       <div className="basic-info-side-by-side">
         <div className="basic-info-side-by-side2">

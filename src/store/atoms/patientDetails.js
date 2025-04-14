@@ -206,6 +206,11 @@ export const getPredictionEntriesWithStatus = atomFamily({
         },
   }),
 });
+
+export const icrRefetchTrigger = atomFamily({
+  key: 'icrRefetchTrigger',
+  default: 0,
+});
 export const getPatientsICRLists = atomFamily({
   key: "getPatientsICRLists",
   default: selectorFamily({
@@ -213,6 +218,7 @@ export const getPatientsICRLists = atomFamily({
     get:
       (id) =>
         async ({ get }) => {
+          get(icrRefetchTrigger(id));
           try {
             const response = await axios.get(
               `${process.env.REACT_APP_API_URL
