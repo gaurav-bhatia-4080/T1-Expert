@@ -354,7 +354,24 @@ export const MonthRecord = (props) => {
                     } else {
                       obj.lcarbs = carbs.toFixed(2);
                     }
-                    obj.bl = varrr.blood_glucose;
+                    obj.blin = <span>
+                      {varrr.status === "Accepted" ? (
+                        <>
+                          <span style={{ color: "green" }}>{varrr.amount_predicted} Accepted</span>
+                        </>
+                      ) : (
+                        <div style={{ textAlign: "left" }}>
+                          <div>
+                            <span style={{ color: "red" }}>{varrr.amount_predicted} Rejected</span>
+                          </div>
+                          <div>
+                            <span style={{ color: "green" }}>{varrr.amount_taken} Taken</span>
+                          </div>
+                        </div>)}
+                    </span>
+
+
+
                     // uniqueNames.push(tryth);
                   } else if (varrr.meal_category == "Breakfast") {
                     // uniqueNames.pop(tryth);
@@ -366,6 +383,22 @@ export const MonthRecord = (props) => {
                     }
 
                     obj.Fasting = varrr.blood_glucose;
+                    obj.Fastingin = <span>
+                      {varrr.status === "Accepted" ? (
+                        <>
+                          <span style={{ color: "green" }}>{varrr.amount_predicted} Accepted</span>
+                        </>
+                      ) : (
+                        <div style={{ textAlign: "left" }}>
+                          <div>
+                            <span style={{ color: "red" }}>{varrr.amount_predicted} Rejected</span>
+                          </div>
+                          <div>
+                            <span style={{ color: "green" }}>{varrr.amount_taken} Taken</span>
+                          </div>
+                        </div>)}
+                    </span>
+
                     // uniqueNames.push(tryth);
                   } else if (varrr.meal_category == "Dinner") {
                     // uniqueNames.pop(tryth);
@@ -377,6 +410,22 @@ export const MonthRecord = (props) => {
                     }
 
                     obj.bd = varrr.blood_glucose;
+                    obj.bdin = <span>
+                      {varrr.status === "Accepted" ? (
+                        <>
+                          <span style={{ color: "green" }}>{varrr.amount_predicted} Accepted</span>
+                        </>
+                      ) : (
+                        <div style={{ textAlign: "left" }}>
+                          <div>
+                            <span style={{ color: "red" }}>{varrr.amount_predicted} Rejected</span>
+                          </div>
+                          <div>
+                            <span style={{ color: "green" }}>{varrr.amount_taken} Taken</span>
+                          </div>
+                        </div>)}
+                    </span>
+
                     // uniqueNames.push(tryth);
                   }
                 }

@@ -277,12 +277,15 @@ export const mypatients = atom({
       }
 
       const email = user.emails[0].value;
-
+      console.log("this is the user email from my patients atom");
+      console.log(email);
       try {
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}/getPatients/${encryptEmailToUrl(email)}`,
           { withCredentials: true }
         );
+        console.log("this is the response from my patients atom 99999999999999999");
+        console.log(response.data);
         return response.data;
       } catch (error) {
         console.error("Error fetching", error);
